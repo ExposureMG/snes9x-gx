@@ -21,9 +21,9 @@ BUILD		:=	build_xenon
 SOURCES		:=	source/snes9x source/snes9x/apu \
 				source/ source/images source/sounds source/fonts source/lang \
 				source/gui source/utils source/utils/sz source/utils/unzip \
-				source/utils/tinysmb lib/mxml-2.6 \
+				source/utils/smb lib/mxml-2.6 \
 				
-INCLUDES	:=	source/ source/snes9x lib/mxml-2.6
+INCLUDES	:=	source/ source/snes9x source/utils/smb lib/mxml-2.6
 
 #---------------------------------------------------------------------------------
 # options for code generation
