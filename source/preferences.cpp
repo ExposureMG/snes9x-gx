@@ -21,6 +21,24 @@
 #include "input.h"
 #include "button_mapping.h"
 
+#ifdef NETPLAY_SUPPORT
+	#include "netplay.h"
+	extern SNPServer NPServer;
+#endif
+
+	
+// tmp !!!
+static void initCedConfig(){
+	Settings.NetPlay = 1;
+	strcpy(Settings.ServerName,"192.168.1.98");
+
+	// Ced2911 network config
+	strcpy(GCSettings.smbip, "192.168.1.98");
+	strcpy(GCSettings.smbshare, "xenon_share");
+	strcpy(GCSettings.smbuser, "cc");
+	strcpy(GCSettings.smbpwd, "cc");
+}
+	
 struct SGCSettings GCSettings;
 
 /****************************************************************************
@@ -419,15 +437,7 @@ DefaultSettings ()
 	GCSettings.MusicVolume = 40;
 	GCSettings.SFXVolume = 40;
 	GCSettings.Rumble = 1;
-	
-#if 1
-	// Ced2911 network config
-	strcpy(GCSettings.smbip, "192.168.1.98");
-	strcpy(GCSettings.smbshare, "xenon_share");
-	strcpy(GCSettings.smbuser, "cc");
-	strcpy(GCSettings.smbpwd, "cc");
-#endif
-	
+		
 #ifdef HW_RVL
 	GCSettings.language = CONF_GetLanguage();
 
@@ -485,6 +495,16 @@ DefaultSettings ()
 	Settings.OneClockCycle = 6;
 	Settings.OneSlowClockCycle = 8;
 	Settings.TwoClockCycles = 12;
+	
+#ifdef NETPLAY_SUPPORT
+	Settings.Port =	1996;
+	NetPlay.MaxFrameSkip = 10;
+	NetPlay.MaxBehindFrameCount	= 10;
+	NPServer.SyncByReset = true;
+	NPServer.SendROMImageOnConnect = false;
+#endif
+	
+	initCedConfig();
 }
 
 /****************************************************************************
