@@ -1,201 +1,28 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
-
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-
-  (c) Copyright 2002 - 2011  zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2011  BearOso,
-                             OV2
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2011  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2011  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2011  zones
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
-
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
 #include <math.h>
-#include "snes9x.h"
+#include "../snes9x.h"
 #include "apu.h"
-#include "snapshot.h"
-#include "display.h"
-#include "linear_resampler.h"
-#include "hermite_resampler.h"
+#include "../msu1.h"
+#include "../snapshot.h"
+#include "../display.h"
+#include "resampler.h"
 
-#define APU_DEFAULT_INPUT_RATE		32000
+#define APU_DEFAULT_INPUT_RATE		32040
 #define APU_MINIMUM_SAMPLE_COUNT	512
 #define APU_MINIMUM_SAMPLE_BLOCK	128
 #define APU_NUMERATOR_NTSC			15664
 #define APU_DENOMINATOR_NTSC		328125
 #define APU_NUMERATOR_PAL			34176
 #define APU_DENOMINATOR_PAL			709379
-#define APU_DEFAULT_RESAMPLER		HermiteResampler
 
 SNES_SPC	*spc_core = NULL;
 
-static uint8 APUROM[64] =
+static const uint8 APUROM[64] =
 {
 	0xCD, 0xEF, 0xBD, 0xE8, 0x00, 0xC6, 0x1D, 0xD0,
 	0xFC, 0x8F, 0xAA, 0xF4, 0x8F, 0xBB, 0xF5, 0x78,
@@ -233,7 +60,18 @@ namespace spc
 	   if necessary on game load. */
 	static uint32		ratio_numerator = APU_NUMERATOR_NTSC;
 	static uint32		ratio_denominator = APU_DENOMINATOR_NTSC;
-}
+
+	static double		dynamic_rate_multiplier = 1.0;
+} // namespace spc
+
+namespace msu
+{
+	static int			buffer_size;
+	static uint8		*landing_buffer = NULL;
+	static Resampler	*resampler		= NULL;
+	static int			resample_buffer_size	= -1;
+	static uint8		*resample_buffer		= NULL;
+} // namespace msu
 
 static void EightBitize (uint8 *, int);
 static void DeStereo (uint8 *, int);
@@ -260,7 +98,7 @@ static void DeStereo (uint8 *buffer, int sample_count)
 	int16	*buf = (int16 *) buffer;
 	int32	s1, s2;
 
-	for (int i = 0; i < sample_count >> 1; i++)
+	for (int i = 0; i < (sample_count >> 1); i++)
 	{
 		s1 = (int32) buf[2 * i];
 		s2 = (int32) buf[2 * i + 1];
@@ -303,11 +141,21 @@ bool8 S9xMixSamples (uint8 *buffer, int sample_count)
 	}
 	else
 		dest = buffer;
+    
+    if (Settings.MSU1 && msu::resample_buffer_size < (sample_count << 3))
+    {
+        delete[] msu::resample_buffer;
+        msu::resample_buffer = new uint8[sample_count << 3];
+        msu::resample_buffer_size = sample_count << 3;
+    }
 
 	if (Settings.Mute)
 	{
 		memset(dest, 0, sample_count << 1);
 		spc::resampler->clear();
+
+		if(Settings.MSU1)
+			msu::resampler->clear();
 
 		return (FALSE);
 	}
@@ -318,6 +166,16 @@ bool8 S9xMixSamples (uint8 *buffer, int sample_count)
 			spc::resampler->read((short *) dest, sample_count);
 			if (spc::lag == spc::lag_master)
 				spc::lag = 0;
+
+			if (Settings.MSU1)
+			{
+                if (msu::resampler->avail() >= sample_count)
+                {
+                    msu::resampler->read((short *)msu::resample_buffer, sample_count);
+                    for (int32 i = 0; i < sample_count; ++i)
+                        *((int16*)(dest+(i * 2))) += *((int16*)(msu::resample_buffer+(i * 2)));
+				}
+			}
 		}
 		else
 		{
@@ -356,8 +214,12 @@ int S9xGetSampleCount (void)
 
 void S9xFinalizeSamples (void)
 {
+	bool drop_current_msu1_samples = TRUE;
+
 	if (!Settings.Mute)
 	{
+		drop_current_msu1_samples = FALSE;
+
 		if (!spc::resampler->push((short *) spc::landing_buffer, spc_core->sample_count()))
 		{
 			/* We weren't able to process the entire buffer. Potential overrun. */
@@ -365,6 +227,23 @@ void S9xFinalizeSamples (void)
 
 			if (Settings.SoundSync && !Settings.TurboMode)
 				return;
+
+			// since we drop the current dsp samples we also want to drop generated msu1 samples
+			drop_current_msu1_samples = TRUE;
+		}
+	}
+
+	// only generate msu1 if we really consumed the dsp samples (sample_count() resets at end of function),
+	// otherwise we will generate multiple times for the same samples - so this needs to be after all early
+	// function returns
+	if (Settings.MSU1)
+	{
+		// generate the same number of msu1 samples as dsp samples were generated
+		S9xMSU1SetOutput((int16 *)msu::landing_buffer, msu::buffer_size);
+		S9xMSU1Generate(spc_core->sample_count());
+		if (!drop_current_msu1_samples && !msu::resampler->push((short *)msu::landing_buffer, S9xMSU1Samples()))
+		{
+			// should not occur, msu buffer is larger and we drop msu samples if spc buffer overruns
 		}
 	}
 
@@ -390,6 +269,8 @@ void S9xLandSamples (void)
 void S9xClearSamples (void)
 {
 	spc::resampler->clear();
+	if (Settings.MSU1)
+		msu::resampler->clear();
 	spc::lag = spc::lag_master;
 }
 
@@ -409,13 +290,33 @@ void S9xSetSamplesAvailableCallback (apu_callback callback, void *data)
 	spc::extra_data  = data;
 }
 
+void S9xUpdateDynamicRate (double rate)
+{
+	if(spc::dynamic_rate_multiplier != rate) {
+		spc::dynamic_rate_multiplier = rate;
+		UpdatePlaybackRate();
+	}
+}
+
 void UpdatePlaybackRate (void)
 {
 	if (Settings.SoundInputRate == 0)
 		Settings.SoundInputRate = APU_DEFAULT_INPUT_RATE;
 
 	double time_ratio = (double) Settings.SoundInputRate * spc::timing_hack_numerator / (Settings.SoundPlaybackRate * spc::timing_hack_denominator);
+
+	if (Settings.DynamicRateControl)
+	{
+		time_ratio *= spc::dynamic_rate_multiplier;
+	}
+
 	spc::resampler->time_ratio(time_ratio);
+
+	if (Settings.MSU1)
+	{
+		time_ratio = (44100.0 / Settings.SoundPlaybackRate) * (Settings.SoundInputRate / 32040.0);
+		msu::resampler->time_ratio(time_ratio);
+	}
 }
 
 bool8 S9xInitSound (int buffer_ms, int lag_ms)
@@ -423,8 +324,8 @@ bool8 S9xInitSound (int buffer_ms, int lag_ms)
 	// buffer_ms : buffer size given in millisecond
 	// lag_ms    : allowable time-lag given in millisecond
 
-	int	sample_count     = buffer_ms * 32000 / 1000;
-	int	lag_sample_count = lag_ms    * 32000 / 1000;
+	int	sample_count     = buffer_ms * 32040 / 1000;
+	int	lag_sample_count = lag_ms    * 32040 / 1000;
 
 	spc::lag_master = lag_sample_count;
 	if (Settings.Stereo)
@@ -439,6 +340,7 @@ bool8 S9xInitSound (int buffer_ms, int lag_ms)
 		spc::buffer_size <<= 1;
 	if (Settings.SixteenBitSound)
 		spc::buffer_size <<= 1;
+	msu::buffer_size = sample_count << 3; // Always 16-bit, Stereo; x2 to never overflow before dsp buffer
 
 	printf("Sound buffer size: %d (%d samples)\n", spc::buffer_size, sample_count);
 
@@ -447,12 +349,17 @@ bool8 S9xInitSound (int buffer_ms, int lag_ms)
 	spc::landing_buffer = new uint8[spc::buffer_size * 2];
 	if (!spc::landing_buffer)
 		return (FALSE);
+	if (msu::landing_buffer)
+		delete[] msu::landing_buffer;
+	msu::landing_buffer = (uint8*) new uint32[msu::buffer_size / 2]; // Ensure 4-byte alignment
+	if (!msu::landing_buffer)
+		return (FALSE);
 
 	/* The resampler and spc unit use samples (16-bit short) as
 	   arguments. Use 2x in the resampler for buffer leveling with SoundSync */
 	if (!spc::resampler)
 	{
-		spc::resampler = new APU_DEFAULT_RESAMPLER(spc::buffer_size >> (Settings.SoundSync ? 0 : 1));
+		spc::resampler = new Resampler(spc::buffer_size >> (Settings.SoundSync ? 0 : 1));
 		if (!spc::resampler)
 		{
 			delete[] spc::landing_buffer;
@@ -461,6 +368,19 @@ bool8 S9xInitSound (int buffer_ms, int lag_ms)
 	}
 	else
 		spc::resampler->resize(spc::buffer_size >> (Settings.SoundSync ? 0 : 1));
+  
+
+	if (!msu::resampler)
+	{
+		msu::resampler = new Resampler(msu::buffer_size >> (Settings.SoundSync ? 0 : 1));
+		if (!msu::resampler)
+		{
+			delete[] msu::landing_buffer;
+			return (FALSE);
+		}
+	}
+	else
+		msu::resampler->resize(msu::buffer_size);
 
 	spc_core->set_output((SNES_SPC::sample_t *) spc::landing_buffer, spc::buffer_size >> 1);
 
@@ -508,6 +428,7 @@ bool8 S9xInitAPU (void)
 	spc::landing_buffer = NULL;
 	spc::shrink_buffer  = NULL;
 	spc::resampler      = NULL;
+	msu::resampler		= NULL;
 
 	return (TRUE);
 }
@@ -537,6 +458,26 @@ void S9xDeinitAPU (void)
 		delete[] spc::shrink_buffer;
 		spc::shrink_buffer = NULL;
 	}
+
+	if (msu::resampler)
+	{
+		delete msu::resampler;
+		msu::resampler = NULL;
+	}
+
+	if (msu::landing_buffer)
+	{
+		delete[] msu::landing_buffer;
+		msu::landing_buffer = NULL;
+	}
+
+	if (msu::resample_buffer)
+	{
+		delete[] msu::resample_buffer;
+		msu::resample_buffer = NULL;
+	}
+	
+	S9xMSU1DeInit();
 }
 
 static inline int S9xAPUGetClock (int32 cpucycles)
@@ -612,6 +553,9 @@ void S9xResetAPU (void)
 	spc_core->set_output((SNES_SPC::sample_t *) spc::landing_buffer, spc::buffer_size >> 1);
 
 	spc::resampler->clear();
+
+	if (Settings.MSU1)
+		msu::resampler->clear();
 }
 
 void S9xSoftResetAPU (void)
@@ -622,6 +566,9 @@ void S9xSoftResetAPU (void)
 	spc_core->set_output((SNES_SPC::sample_t *) spc::landing_buffer, spc::buffer_size >> 1);
 
 	spc::resampler->clear();
+
+	if (Settings.MSU1)
+		msu::resampler->clear();
 }
 
 static void from_apu_to_state (uint8 **buf, void *var, size_t size)
@@ -658,4 +605,28 @@ void S9xAPULoadState (uint8 *block)
 	spc::reference_time = GET_LE32(ptr);
 	ptr += sizeof(int32);
 	spc::remainder = GET_LE32(ptr);
+}
+
+bool8 S9xSPCDump (const char *filename)
+{
+	FILE	*fs;
+	uint8	buf[SNES_SPC::spc_file_size];
+	size_t	ignore;
+
+	fs = fopen(filename, "wb");
+	if (!fs)
+		return (FALSE);
+
+	S9xSetSoundMute(TRUE);
+
+	spc_core->init_header(buf);
+	spc_core->save_spc(buf);
+
+	ignore = fwrite(buf, SNES_SPC::spc_file_size, 1, fs);
+
+	fclose(fs);
+
+	S9xSetSoundMute(FALSE);
+
+	return (TRUE);
 }

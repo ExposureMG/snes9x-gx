@@ -468,6 +468,14 @@ DefaultSettings ()
 	// Frame timings in 50hz and 60hz cpu mode
 	Settings.FrameTimePAL = 20000;
 	Settings.FrameTimeNTSC = 16667;
+
+	/* Super FX / CPU timing used by the snes9x 1.61 core (SNES9XGX build) */
+	Settings.SuperFXSpeedPerLine = 5823405;
+	Settings.SuperFXClockMultiplier = 100;
+	Settings.OverclockMode = 0;
+	Settings.OneClockCycle = 6;
+	Settings.OneSlowClockCycle = 8;
+	Settings.TwoClockCycles = 12;
 }
 
 /****************************************************************************

@@ -115,6 +115,9 @@ void ShutdownWii();
 bool SupportedIOS(u32 ios);
 bool SaneIOS(u32 ios);
 extern struct SGCSettings GCSettings;
+
+/* snes9x core (SNES9XGX build) reads EmuSettings.crosshair */
+#define EmuSettings GCSettings
 extern int ScreenshotRequested;
 extern int ConfigRequested;
 extern int ShutdownRequested;

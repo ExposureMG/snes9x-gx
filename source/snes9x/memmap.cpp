@@ -1,198 +1,31 @@
-/***********************************************************************************
-  Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+/*****************************************************************************\
+     Snes9x - Portable Super Nintendo Entertainment System (TM) emulator.
+                This file is licensed under the Snes9x License.
+   For further information, consult the LICENSE file in the root directory.
+\*****************************************************************************/
 
-  (c) Copyright 1996 - 2002  Gary Henderson (gary.henderson@ntlworld.com),
-                             Jerremy Koot (jkoot@snes9x.com)
-
-  (c) Copyright 2002 - 2004  Matthew Kendora
-
-  (c) Copyright 2002 - 2005  Peter Bortas (peter@bortas.org)
-
-  (c) Copyright 2004 - 2005  Joel Yliluoma (http://iki.fi/bisqwit/)
-
-  (c) Copyright 2001 - 2006  John Weidman (jweidman@slip.net)
-
-  (c) Copyright 2002 - 2006  funkyass (funkyass@spam.shaw.ca),
-                             Kris Bleakley (codeviolation@hotmail.com)
-
-  (c) Copyright 2002 - 2010  Brad Jorsch (anomie@users.sourceforge.net),
-                             Nach (n-a-c-h@users.sourceforge.net),
-                             zones (kasumitokoduck@yahoo.com)
-
-  (c) Copyright 2006 - 2007  nitsuja
-
-  (c) Copyright 2009 - 2010  BearOso,
-                             OV2
-
-
-  BS-X C emulator code
-  (c) Copyright 2005 - 2006  Dreamer Nom,
-                             zones
-
-  C4 x86 assembler and some C emulation code
-  (c) Copyright 2000 - 2003  _Demo_ (_demo_@zsnes.com),
-                             Nach,
-                             zsKnight (zsknight@zsnes.com)
-
-  C4 C++ code
-  (c) Copyright 2003 - 2006  Brad Jorsch,
-                             Nach
-
-  DSP-1 emulator code
-  (c) Copyright 1998 - 2006  _Demo_,
-                             Andreas Naive (andreasnaive@gmail.com),
-                             Gary Henderson,
-                             Ivar (ivar@snes9x.com),
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora,
-                             Nach,
-                             neviksti (neviksti@hotmail.com)
-
-  DSP-2 emulator code
-  (c) Copyright 2003         John Weidman,
-                             Kris Bleakley,
-                             Lord Nightmare (lord_nightmare@users.sourceforge.net),
-                             Matthew Kendora,
-                             neviksti
-
-  DSP-3 emulator code
-  (c) Copyright 2003 - 2006  John Weidman,
-                             Kris Bleakley,
-                             Lancer,
-                             z80 gaiden
-
-  DSP-4 emulator code
-  (c) Copyright 2004 - 2006  Dreamer Nom,
-                             John Weidman,
-                             Kris Bleakley,
-                             Nach,
-                             z80 gaiden
-
-  OBC1 emulator code
-  (c) Copyright 2001 - 2004  zsKnight,
-                             pagefault (pagefault@zsnes.com),
-                             Kris Bleakley
-                             Ported from x86 assembler to C by sanmaiwashi
-
-  SPC7110 and RTC C++ emulator code used in 1.39-1.51
-  (c) Copyright 2002         Matthew Kendora with research by
-                             zsKnight,
-                             John Weidman,
-                             Dark Force
-
-  SPC7110 and RTC C++ emulator code used in 1.52+
-  (c) Copyright 2009         byuu,
-                             neviksti
-
-  S-DD1 C emulator code
-  (c) Copyright 2003         Brad Jorsch with research by
-                             Andreas Naive,
-                             John Weidman
-
-  S-RTC C emulator code
-  (c) Copyright 2001 - 2006  byuu,
-                             John Weidman
-
-  ST010 C++ emulator code
-  (c) Copyright 2003         Feather,
-                             John Weidman,
-                             Kris Bleakley,
-                             Matthew Kendora
-
-  Super FX x86 assembler emulator code
-  (c) Copyright 1998 - 2003  _Demo_,
-                             pagefault,
-                             zsKnight
-
-  Super FX C emulator code
-  (c) Copyright 1997 - 1999  Ivar,
-                             Gary Henderson,
-                             John Weidman
-
-  Sound emulator code used in 1.5-1.51
-  (c) Copyright 1998 - 2003  Brad Martin
-  (c) Copyright 1998 - 2006  Charles Bilyue'
-
-  Sound emulator code used in 1.52+
-  (c) Copyright 2004 - 2007  Shay Green (gblargg@gmail.com)
-
-  SH assembler code partly based on x86 assembler code
-  (c) Copyright 2002 - 2004  Marcus Comstedt (marcus@mc.pp.se)
-
-  2xSaI filter
-  (c) Copyright 1999 - 2001  Derek Liauw Kie Fa
-
-  HQ2x, HQ3x, HQ4x filters
-  (c) Copyright 2003         Maxim Stepin (maxim@hiend3d.com)
-
-  NTSC filter
-  (c) Copyright 2006 - 2007  Shay Green
-
-  GTK+ GUI code
-  (c) Copyright 2004 - 2010  BearOso
-
-  Win32 GUI code
-  (c) Copyright 2003 - 2006  blip,
-                             funkyass,
-                             Matthew Kendora,
-                             Nach,
-                             nitsuja
-  (c) Copyright 2009 - 2010  OV2
-
-  Mac OS GUI code
-  (c) Copyright 1998 - 2001  John Stiles
-  (c) Copyright 2001 - 2010  zones
-
-
-  Specific ports contains the works of other authors. See headers in
-  individual files.
-
-
-  Snes9x homepage: http://www.snes9x.com/
-
-  Permission to use, copy, modify and/or distribute Snes9x in both binary
-  and source form, for non-commercial purposes, is hereby granted without
-  fee, providing that this license information and copyright notice appear
-  with all copies and any derived work.
-
-  This software is provided 'as-is', without any express or implied
-  warranty. In no event shall the authors be held liable for any damages
-  arising from the use of this software or it's derivatives.
-
-  Snes9x is freeware for PERSONAL USE only. Commercial users should
-  seek permission of the copyright holders first. Commercial use includes,
-  but is not limited to, charging money for Snes9x or software derived from
-  Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
-  using Snes9x as a promotion for your commercial product.
-
-  The copyright holders request that bug fixes and improvements to the code
-  should be forwarded to them so everyone can benefit from the modifications
-  in future versions.
-
-  Super NES and Super Nintendo Entertainment System are trademarks of
-  Nintendo Co., Limited and its subsidiary companies.
- ***********************************************************************************/
-
-#ifdef GEKKO
-#include <gccore.h>
-#include <malloc.h>
-#elif defined XENON
+#ifdef XENON
 #include <xetypes.h>
-#include <malloc.h>
 #endif
-
+#include <malloc.h>
 #include <string>
 #include <numeric>
 #include <assert.h>
 
 #ifdef UNZIP_SUPPORT
-#include "unzip/unzip.h"
+#  ifdef SYSTEM_ZIP
+#    include <minizip/unzip.h>
+#  else
+#    include "unzip/unzip.h"
+#  endif
 #endif
 
 #ifdef JMA_SUPPORT
 #include "jma/s9x-jma.h"
 #endif
+
+#include <ctype.h>
+#include <sys/stat.h>
 
 #include "snes9x.h"
 #include "memmap.h"
@@ -203,10 +36,11 @@
 #include "controls.h"
 #include "cheats.h"
 #include "movie.h"
-#include "reader.h"
 #include "display.h"
+#include "sha256.h"
+#include "snapshot.h"
 
-#if defined(GEKKO)||defined(XENON)
+#ifdef SNES9XGX
 #include "../xenon/filebrowser.h"
 extern int WiiFileLoader();
 extern void WiiSetupCheats();
@@ -949,17 +783,17 @@ static void S9xDeinterleaveType1 (int, uint8 *);
 static void S9xDeinterleaveType2 (int, uint8 *);
 static void S9xDeinterleaveGD24 (int, uint8 *);
 static bool8 allASCII (uint8 *, int);
-static bool8 is_SufamiTurbo_BIOS (uint8 *, uint32);
-static bool8 is_SufamiTurbo_Cart (uint8 *, uint32);
-static bool8 is_SameGame_BIOS (uint8 *, uint32);
-static bool8 is_SameGame_Add_On (uint8 *, uint32);
+static bool8 is_SufamiTurbo_BIOS (const uint8 *, uint32);
+static bool8 is_SufamiTurbo_Cart (const uint8 *, uint32);
+static bool8 is_BSCart_BIOS (const uint8 *, uint32);
+static bool8 is_BSCartSA1_BIOS(const uint8 *, uint32);
+static bool8 is_GNEXT_Add_On (const uint8 *, uint32);
 static uint32 caCRC32 (uint8 *, uint32, uint32 crc32 = 0xffffffff);
-static uint32 ReadUPSPointer (const uint8 *, unsigned &, unsigned);
-static bool8 ReadUPSPatch (Reader *, long, int32 &);
-static long ReadInt (Reader *, unsigned);
-static bool8 ReadIPSPatch (Reader *, long, int32 &);
+static bool8 ReadUPSPatch (Stream *, long, int32 &);
+static long ReadInt (Stream *, unsigned);
+static bool8 ReadIPSPatch (Stream *, long, int32 &);
 #ifdef UNZIP_SUPPORT
-static int unzFindExtension (unzFile &, const char *, bool restart = TRUE, bool print = TRUE);
+static int unzFindExtension (unzFile &, const char *, bool restart = TRUE, bool print = TRUE, bool allowExact = FALSE);
 #endif
 
 // deinterleave
@@ -1070,9 +904,12 @@ static void S9xDeinterleaveGD24 (int size, uint8 *base)
 
 bool8 CMemory::Init (void)
 {
+	// TODO: If these change size, check other locations in the code that also
+	// have the fixed size. In the future, make this a static allocation.
     RAM	 = (uint8 *) memalign(32,0x20000);
-    SRAM = (uint8 *) memalign(32,0x20000);
+    SRAM = (uint8 *) memalign(32,0x80000);
     VRAM = (uint8 *) memalign(32,0x10000);
+
     ROM  = (uint8 *) memalign(32,MAX_ROM_SIZE + 0x200 + 0x8000);
 
 	IPPU.TileCache[TILE_2BIT]       = (uint8 *) memalign(32,MAX_2BIT_TILES * 64);
@@ -1111,26 +948,26 @@ bool8 CMemory::Init (void)
 		return (FALSE);
     }
 
-	ZeroMemory(RAM,  0x20000);
-	ZeroMemory(SRAM, 0x20000);
-	ZeroMemory(VRAM, 0x10000);
-	ZeroMemory(ROM,  MAX_ROM_SIZE + 0x200 + 0x8000);
+	memset(RAM, 0,  0x20000);
+	memset(SRAM, 0, 0x80000);
+	memset(VRAM, 0, 0x10000);
+	memset(ROM, 0,  MAX_ROM_SIZE + 0x200 + 0x8000);
 
-	ZeroMemory(IPPU.TileCache[TILE_2BIT],       MAX_2BIT_TILES * 64);
-	ZeroMemory(IPPU.TileCache[TILE_4BIT],       MAX_4BIT_TILES * 64);
-	ZeroMemory(IPPU.TileCache[TILE_8BIT],       MAX_8BIT_TILES * 64);
-	ZeroMemory(IPPU.TileCache[TILE_2BIT_EVEN],  MAX_2BIT_TILES * 64);
-	ZeroMemory(IPPU.TileCache[TILE_2BIT_ODD],   MAX_2BIT_TILES * 64);
-	ZeroMemory(IPPU.TileCache[TILE_4BIT_EVEN],  MAX_4BIT_TILES * 64);
-	ZeroMemory(IPPU.TileCache[TILE_4BIT_ODD],   MAX_4BIT_TILES * 64);
+	memset(IPPU.TileCache[TILE_2BIT], 0,       MAX_2BIT_TILES * 64);
+	memset(IPPU.TileCache[TILE_4BIT], 0,       MAX_4BIT_TILES * 64);
+	memset(IPPU.TileCache[TILE_8BIT], 0,       MAX_8BIT_TILES * 64);
+	memset(IPPU.TileCache[TILE_2BIT_EVEN], 0,  MAX_2BIT_TILES * 64);
+	memset(IPPU.TileCache[TILE_2BIT_ODD], 0,   MAX_2BIT_TILES * 64);
+	memset(IPPU.TileCache[TILE_4BIT_EVEN], 0,  MAX_4BIT_TILES * 64);
+	memset(IPPU.TileCache[TILE_4BIT_ODD], 0,   MAX_4BIT_TILES * 64);
 
-	ZeroMemory(IPPU.TileCached[TILE_2BIT],      MAX_2BIT_TILES);
-	ZeroMemory(IPPU.TileCached[TILE_4BIT],      MAX_4BIT_TILES);
-	ZeroMemory(IPPU.TileCached[TILE_8BIT],      MAX_8BIT_TILES);
-	ZeroMemory(IPPU.TileCached[TILE_2BIT_EVEN], MAX_2BIT_TILES);
-	ZeroMemory(IPPU.TileCached[TILE_2BIT_ODD],  MAX_2BIT_TILES);
-	ZeroMemory(IPPU.TileCached[TILE_4BIT_EVEN], MAX_4BIT_TILES);
-	ZeroMemory(IPPU.TileCached[TILE_4BIT_ODD],  MAX_4BIT_TILES);
+	memset(IPPU.TileCached[TILE_2BIT], 0,      MAX_2BIT_TILES);
+	memset(IPPU.TileCached[TILE_4BIT], 0,      MAX_4BIT_TILES);
+	memset(IPPU.TileCached[TILE_8BIT], 0,      MAX_8BIT_TILES);
+	memset(IPPU.TileCached[TILE_2BIT_EVEN], 0, MAX_2BIT_TILES);
+	memset(IPPU.TileCached[TILE_2BIT_ODD], 0,  MAX_2BIT_TILES);
+	memset(IPPU.TileCached[TILE_4BIT_EVEN], 0, MAX_4BIT_TILES);
+	memset(IPPU.TileCached[TILE_4BIT_ODD], 0,  MAX_4BIT_TILES);
 
 	// FillRAM uses first 32K of ROM image area, otherwise space just
 	// wasted. Might be read by the SuperFX code.
@@ -1181,11 +1018,10 @@ void CMemory::Deinit (void)
 	if (ROM)
 	{
 		ROM -= 0x8000;
-		free(ROM);
 		ROM = NULL;
 	}
 
-	for (int t = 0; t < 7; t++)
+	for (int t = 0; t <= TILE_8BIT; t++)
 	{
 		if (IPPU.TileCache[t])
 		{
@@ -1217,7 +1053,7 @@ static bool8 allASCII (uint8 *b, int size)
 	return (TRUE);
 }
 
-static bool8 is_SufamiTurbo_BIOS (uint8 *data, uint32 size)
+static bool8 is_SufamiTurbo_BIOS (const uint8 *data, uint32 size)
 {
 	if (size == 0x40000 &&
 		strncmp((char *) data, "BANDAI SFC-ADX", 14) == 0 && strncmp((char * ) (data + 0x10), "SFC-ADX BACKUP", 14) == 0)
@@ -1226,7 +1062,7 @@ static bool8 is_SufamiTurbo_BIOS (uint8 *data, uint32 size)
 		return (FALSE);
 }
 
-static bool8 is_SufamiTurbo_Cart (uint8 *data, uint32 size)
+static bool8 is_SufamiTurbo_Cart (const uint8 *data, uint32 size)
 {
 	if (size >= 0x80000 && size <= 0x100000 &&
 		strncmp((char *) data, "BANDAI SFC-ADX", 14) == 0 && strncmp((char * ) (data + 0x10), "SFC-ADX BACKUP", 14) != 0)
@@ -1235,15 +1071,40 @@ static bool8 is_SufamiTurbo_Cart (uint8 *data, uint32 size)
 		return (FALSE);
 }
 
-static bool8 is_SameGame_BIOS (uint8 *data, uint32 size)
+static bool8 is_BSCart_BIOS(const uint8 *data, uint32 size)
 {
-	if (size == 0x100000 && strncmp((char *) (data + 0xffc0), "Same Game Tsume Game", 20) == 0)
+	if ((data[0x7FB2] == 0x5A) && (data[0x7FB5] != 0x20) && (data[0x7FDA] == 0x33))
+	{
+		Memory.LoROM = TRUE;
+		Memory.HiROM = FALSE;
+
+		return (TRUE);
+	}
+	else if ((data[0xFFB2] == 0x5A) && (data[0xFFB5] != 0x20) && (data[0xFFDA] == 0x33))
+	{
+		Memory.LoROM = FALSE;
+		Memory.HiROM = TRUE;
+
+		return (TRUE);
+	}
+	else
+		return (FALSE);
+}
+
+static bool8 is_BSCartSA1_BIOS (const uint8 *data, uint32 size)
+{
+	//Same basic check as BSCart
+	if (!is_BSCart_BIOS(data, size))
+		return (FALSE);
+
+	//Checks if the game is Itoi's Bass Fishing No. 1 (ZBPJ) or SD Gundam G-NEXT (ZX3J)
+	if (strncmp((char *)(data + 0x7fb2), "ZBPJ", 4) == 0 || strncmp((char *)(data + 0x7fb2), "ZX3J", 4) == 0)
 		return (TRUE);
 	else
 		return (FALSE);
 }
 
-static bool8 is_SameGame_Add_On (uint8 *data, uint32 size)
+static bool8 is_GNEXT_Add_On (const uint8 *data, uint32 size)
 {
 	if (size == 0x80000)
 		return (TRUE);
@@ -1255,6 +1116,11 @@ int CMemory::ScoreHiROM (bool8 skip_header, int32 romoff)
 {
 	uint8	*buf = ROM + 0xff00 + romoff + (skip_header ? 0x200 : 0);
 	int		score = 0;
+
+	// Check for extended HiROM expansion used in Mother 2 Deluxe et al.
+	// Looks for size byte 13 (8MB) and an actual ROM size greater than 4MB
+	if (buf[0xd7] == 13 && CalculatedSize > 1024 * 1024 * 4)
+		score += 3;
 
 	if (buf[0xd5] & 0x1)
 		score += 2;
@@ -1288,7 +1154,7 @@ int CMemory::ScoreHiROM (bool8 skip_header, int32 romoff)
 	if (CalculatedSize > 1024 * 1024 * 3)
 		score += 4;
 
-	if ((1 << (buf[0xd7] - 7)) > 48)
+	if (buf[0xd7] > 12)
 		score -= 1;
 
 	if (!allASCII(&buf[0xb0], 6))
@@ -1334,7 +1200,7 @@ int CMemory::ScoreLoROM (bool8 skip_header, int32 romoff)
 	if (CalculatedSize <= 1024 * 1024 * 16)
 		score += 2;
 
-	if ((1 << (buf[0xd7] - 7)) > 48)
+	if (buf[0xd7] > 12)
 		score -= 1;
 
 	if (!allASCII(&buf[0xb0], 6))
@@ -1346,7 +1212,21 @@ int CMemory::ScoreLoROM (bool8 skip_header, int32 romoff)
 	return (score);
 }
 
-uint32 CMemory::HeaderRemove (uint32 size, int32 &headerCount, uint8 *buf)
+int CMemory::First512BytesCountZeroes() const
+{
+	const uint8 *buf = ROM;
+	int zeroCount = 0;
+	for (int i = 0; i < 512; i++)
+	{
+		if (buf[i] == 0)
+		{
+			zeroCount++;
+		}
+	}
+	return zeroCount;
+}
+
+uint32 CMemory::HeaderRemove (uint32 size, uint8 *buf)
 {
 	uint32	calc_size = (size / 0x2000) * 0x2000;
 
@@ -1367,20 +1247,20 @@ uint32 CMemory::HeaderRemove (uint32 size, int32 &headerCount, uint8 *buf)
 		}
 
 		memmove(buf, buf + 512, calc_size);
-		headerCount++;
+		HeaderCount++;
 		size -= 512;
 	}
 
 	return (size);
 }
 
-uint32 CMemory::FileLoader (uint8 *buffer, const char *filename, int32 maxsize)
+uint32 CMemory::FileLoader (uint8 *buffer, const char *filename, uint32 maxsize)
 {
 	// <- ROM size without header
 	// ** Memory.HeaderCount
 	// ** Memory.ROMFilename
 
-	int32	totalSize = 0;
+	uint32	totalSize = 0;
     char	fname[PATH_MAX + 1];
     char	drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], name[_MAX_FNAME + 1], exts[_MAX_EXT + 1];
 	char	*ext;
@@ -1398,7 +1278,7 @@ uint32 CMemory::FileLoader (uint8 *buffer, const char *filename, int32 maxsize)
 	_makepath(fname, drive, dir, name, exts);
 
 	int	nFormat = FILE_DEFAULT;
-	if (strcasecmp(ext, "zip") == 0)
+	if (strcasecmp(ext, "zip") == 0 || strcasecmp(ext, "msu1") == 0)
 		nFormat = FILE_ZIP;
 	else
 	if (strcasecmp(ext, "jma") == 0)
@@ -1409,7 +1289,7 @@ uint32 CMemory::FileLoader (uint8 *buffer, const char *filename, int32 maxsize)
 		case FILE_ZIP:
 		{
 		#ifdef UNZIP_SUPPORT
-			if (!LoadZip(fname, &totalSize, &HeaderCount, buffer))
+			if (!LoadZip(fname, &totalSize, buffer))
 			{
 			 	S9xMessage(S9X_ERROR, S9X_ROM_INFO, "Invalid Zip archive.");
 				return (0);
@@ -1433,7 +1313,7 @@ uint32 CMemory::FileLoader (uint8 *buffer, const char *filename, int32 maxsize)
 				return (0);
 			}
 
-			totalSize = HeaderRemove(size, HeaderCount, buffer);
+			totalSize = HeaderRemove(size, buffer);
 
 			strcpy(ROMFilename, fname);
 		#else
@@ -1462,7 +1342,7 @@ uint32 CMemory::FileLoader (uint8 *buffer, const char *filename, int32 maxsize)
 				size = READ_STREAM(ptr, maxsize + 0x200 - (ptr - buffer), fp);
 				CLOSE_STREAM(fp);
 
-				size = HeaderRemove(size, HeaderCount, ptr);
+				size = HeaderRemove(size, ptr);
 				totalSize += size;
 				ptr += size;
 
@@ -1505,57 +1385,92 @@ uint32 CMemory::FileLoader (uint8 *buffer, const char *filename, int32 maxsize)
 	return ((uint32) totalSize);
 }
 
+bool8 CMemory::LoadROMMem (const uint8 *source, uint32 sourceSize)
+{
+    if(!source || sourceSize > MAX_ROM_SIZE)
+        return FALSE;
+
+    strcpy(ROMFilename,"MemoryROM");
+
+    do
+    {
+        memset(ROM,0, MAX_ROM_SIZE);
+        memset(&Multi, 0,sizeof(Multi));
+        memcpy(ROM,source,sourceSize);
+    }
+    while(!LoadROMInt(sourceSize));
+
+    return TRUE;
+}
+
 bool8 CMemory::LoadROM (const char *filename)
 {
-	int	retry_count = 0;
+    if(!filename || !*filename)
+        return FALSE;
 
-	if (!filename || !*filename)
-		return (FALSE);
+    S9xResetSaveTimer(FALSE); // reset oops timer here so that .oops file has rom name of previous rom
+	
+    int32 totalFileSize;
 
-	ZeroMemory(ROM, MAX_ROM_SIZE);
-	ZeroMemory(&Multi, sizeof(Multi));
- 
-again:
+    do
+    {
+        memset(ROM,0, MAX_ROM_SIZE);
+        memset(&Multi, 0,sizeof(Multi));
+        
+        #ifdef SNES9XGX
+			totalFileSize = WiiFileLoader();
+		#else
+			totalFileSize = FileLoader(ROM, filename, MAX_ROM_SIZE);
+		#endif
+
+        if (!totalFileSize)
+            return (FALSE);
+
+        CheckForAnyPatch(filename, HeaderCount != 0, totalFileSize);
+    }
+    while(!LoadROMInt(totalFileSize));
+
+    return TRUE;
+}
+
+bool8 CMemory::LoadROMInt (int32 ROMfillSize)
+{
 	Settings.DisplayColor = BUILD_PIXEL(31, 31, 31);
 	SET_UI_COLOR(255, 255, 255);
 
 	CalculatedSize = 0;
 	ExtendedFormat = NOPE;
 
-	int32 totalFileSize;
-
-#if defined(GEKKO)||defined(XENON)
-	totalFileSize = WiiFileLoader();
-#else
-	totalFileSize = FileLoader(ROM, filename, MAX_ROM_SIZE);
-#endif
-
-	if (!totalFileSize)
-		return (FALSE);
-
-	if (!Settings.NoPatch)
-		CheckForAnyPatch(filename, HeaderCount != 0, totalFileSize);
-
 	int	hi_score, lo_score;
+	int score_headered;
+	int score_nonheadered;
 
 	hi_score = ScoreHiROM(FALSE);
 	lo_score = ScoreLoROM(FALSE);
+	score_nonheadered = max(hi_score, lo_score);
+	score_headered = max(ScoreHiROM(TRUE), ScoreLoROM(TRUE));
 
-	if (HeaderCount == 0 && !Settings.ForceNoHeader &&
-		((hi_score >  lo_score && ScoreHiROM(TRUE) > hi_score) ||
-		 (hi_score <= lo_score && ScoreLoROM(TRUE) > lo_score)))
+	bool size_is_likely_headered = ((ROMfillSize - 512) & 0xFFFF) == 0;
+	if (size_is_likely_headered) { score_headered += 2; } else { score_headered -= 2; }
+	if (First512BytesCountZeroes() >= 0x1E0) { score_headered += 2; } else { score_headered -= 2; }
+
+	bool headered_score_highest = score_headered > score_nonheadered;
+
+	if (HeaderCount == 0 && !Settings.ForceNoHeader && headered_score_highest)
 	{
-		memmove(ROM, ROM + 512, totalFileSize - 512);
-		totalFileSize -= 512;
+		memmove(ROM, ROM + 512, ROMfillSize - 512);
+		ROMfillSize -= 512;
 		S9xMessage(S9X_INFO, S9X_HEADER_WARNING, "Try 'force no-header' option if the game doesn't work");
 		// modifying ROM, so we need to rescore
 		hi_score = ScoreHiROM(FALSE);
 		lo_score = ScoreLoROM(FALSE);
 	}
 
-	CalculatedSize = (totalFileSize / 0x2000) * 0x2000;
+	CalculatedSize = ((ROMfillSize + 0x1fff) / 0x2000) * 0x2000;
 
 	if (CalculatedSize > 0x400000 &&
+		(ROM[0x7fd5] + (ROM[0x7fd6] << 8)) != 0x3423 && // exclude SA-1
+		(ROM[0x7fd5] + (ROM[0x7fd6] << 8)) != 0x3523 &&
 		(ROM[0x7fd5] + (ROM[0x7fd6] << 8)) != 0x4332 && // exclude S-DD1
 		(ROM[0x7fd5] + (ROM[0x7fd6] << 8)) != 0x4532 &&
 		(ROM[0xffd5] + (ROM[0xffd6] << 8)) != 0xF93a && // exclude SPC7110
@@ -1568,7 +1483,7 @@ again:
 		((ROM[0xfffc] + (ROM[0xfffd] << 8)) < 0x8000))
 	{
 		if (!Settings.ForceInterleaved && !Settings.ForceNotInterleaved)
-			S9xDeinterleaveType1(totalFileSize, ROM);
+			S9xDeinterleaveType1(ROMfillSize, ROM);
 	}
 
 	// CalculatedSize is now set, so rescore
@@ -1696,14 +1611,10 @@ again:
 		if ((HiROM && (lo_score >= hi_score || hi_score < 0)) ||
 			(LoROM && (hi_score >  lo_score || lo_score < 0)))
 		{
-			if (retry_count == 0)
-			{
-				S9xMessage(S9X_INFO, S9X_ROM_CONFUSING_FORMAT_INFO, "ROM lied about its type! Trying again.");
-				Settings.ForceNotInterleaved = TRUE;
-				Settings.ForceInterleaved = FALSE;
-				retry_count++;
-				goto again;
-			}
+			S9xMessage(S9X_INFO, S9X_ROM_CONFUSING_FORMAT_INFO, "ROM lied about its type! Trying again.");
+			Settings.ForceNotInterleaved = TRUE;
+			Settings.ForceInterleaved = FALSE;
+            return (FALSE);
 		}
     }
 
@@ -1723,76 +1634,164 @@ again:
 		}
 	}
 
-	if (strncmp(LastRomFilename, filename, PATH_MAX + 1))
+	if (strncmp(LastRomFilename, ROMFilename, PATH_MAX + 1))
 	{
-		strncpy(LastRomFilename, filename, PATH_MAX + 1);
+		strncpy(LastRomFilename, ROMFilename, PATH_MAX + 1);
 		LastRomFilename[PATH_MAX] = 0;
 	}
 
-	ZeroMemory(&SNESGameFixes, sizeof(SNESGameFixes));
+	memset(&SNESGameFixes, 0, sizeof(SNESGameFixes));
 	SNESGameFixes.SRAMInitialValue = 0x60;
-#if defined(GEKKO)||defined(XENON)
+
+	InitROM();
+
+	S9xReset();
+
+	S9xDeleteCheats();
+#ifdef SNES9XGX
 	WiiSetupCheats();
 #else
 	S9xLoadCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
 #endif
-	InitROM();
-
-	S9xInitCheatData();
-	S9xApplyCheats();
-
-	S9xReset();
 
     return (TRUE);
 }
 
+bool8 CMemory::LoadMultiCartMem (const uint8 *sourceA, uint32 sourceASize,
+                                 const uint8 *sourceB, uint32 sourceBSize,
+                                 const uint8 *bios, uint32 biosSize)
+{
+    uint32 offset = 0;
+    memset(ROM, 0, MAX_ROM_SIZE);
+	memset(&Multi, 0, sizeof(Multi));
+
+    if(bios) {
+        if(!is_SufamiTurbo_BIOS(bios,biosSize))
+            return FALSE;
+
+        memcpy(ROM,bios,biosSize);
+        offset+=biosSize;
+    }
+
+    if(sourceA) {
+        memcpy(ROM + offset,sourceA,sourceASize);
+        Multi.cartOffsetA = offset;
+        Multi.cartSizeA = sourceASize;
+        offset += sourceASize;
+        strcpy(Multi.fileNameA,"MemCartA");
+    }
+
+    if(sourceB) {
+        memcpy(ROM + offset,sourceB,sourceBSize);
+        Multi.cartOffsetB = offset;
+        Multi.cartSizeB = sourceBSize;
+        offset += sourceBSize;
+        strcpy(Multi.fileNameB,"MemCartB");
+    }
+
+    return LoadMultiCartInt();
+}
+
 bool8 CMemory::LoadMultiCart (const char *cartA, const char *cartB)
 {
-	bool8	r = TRUE;
-
-	ZeroMemory(ROM, MAX_ROM_SIZE);
-	ZeroMemory(&Multi, sizeof(Multi));
+    S9xResetSaveTimer(FALSE); // reset oops timer here so that .oops file has rom name of previous rom
+	
+    memset(ROM, 0, MAX_ROM_SIZE);
+	memset(&Multi, 0, sizeof(Multi));
 
 	Settings.DisplayColor = BUILD_PIXEL(31, 31, 31);
 	SET_UI_COLOR(255, 255, 255);
 
-	CalculatedSize = 0;
-	ExtendedFormat = NOPE;
+    if (cartB && cartB[0])
+		Multi.cartSizeB = FileLoader(ROM, cartB, MAX_ROM_SIZE);
+
+    if (Multi.cartSizeB) {
+        strcpy(Multi.fileNameB, cartB);
+
+		CheckForAnyPatch(cartB, HeaderCount != 0, Multi.cartSizeB);
+
+        Multi.cartOffsetB = 0x400000;
+        memcpy(ROM + Multi.cartOffsetB,ROM,Multi.cartSizeB);
+    }
 
 	if (cartA && cartA[0])
 		Multi.cartSizeA = FileLoader(ROM, cartA, MAX_ROM_SIZE);
 
-	if (Multi.cartSizeA == 0)
-	{
-		if (cartB && cartB[0])
-			Multi.cartSizeB = FileLoader(ROM, cartB, MAX_ROM_SIZE);
-	}
+    if (Multi.cartSizeA) {
+        strcpy(Multi.fileNameA, cartA);
+
+		CheckForAnyPatch(cartA, HeaderCount != 0, Multi.cartSizeA);
+    }
+
+    return LoadMultiCartInt();
+}
+
+bool8 CMemory::LoadMultiCartInt ()
+{
+	bool8	r = TRUE;
+
+	CalculatedSize = 0;
+	ExtendedFormat = NOPE;
 
 	if (Multi.cartSizeA)
 	{
-		if (is_SufamiTurbo_Cart(ROM, Multi.cartSizeA))
+        if (is_SufamiTurbo_Cart(ROM + Multi.cartOffsetA, Multi.cartSizeA))
 			Multi.cartType = 4;
 		else
-		if (is_SameGame_BIOS(ROM, Multi.cartSizeA))
+		if (is_BSCartSA1_BIOS(ROM + Multi.cartOffsetA, Multi.cartSizeA))
+			Multi.cartType = 5;
+		else
+		if (is_BSCart_BIOS(ROM + Multi.cartOffsetA, Multi.cartSizeA))
 			Multi.cartType = 3;
 	}
 	else
 	if (Multi.cartSizeB)
 	{
-		if (is_SufamiTurbo_Cart(ROM, Multi.cartSizeB))
+        if (is_SufamiTurbo_Cart(ROM + Multi.cartOffsetB, Multi.cartSizeB))
 			Multi.cartType = 4;
 	}
 	else
 		Multi.cartType = 4; // assuming BIOS only
 
+
+    if(Multi.cartType == 4 && Multi.cartOffsetA == 0) { // try to load bios from file
+        Multi.cartOffsetA = 0x40000;
+        if(Multi.cartSizeA)
+            memmove(ROM + Multi.cartOffsetA, ROM, Multi.cartSizeA + Multi.cartSizeB);
+        else if(Multi.cartOffsetB) // clear cart A so the bios can detect that it's not present
+            memset(ROM, 0, Multi.cartOffsetB);
+
+        FILE	*fp;
+	    size_t	size;
+	    char	path[PATH_MAX + 1];
+
+	    strcpy(path, S9xGetDirectory(BIOS_DIR));
+	    strcat(path, SLASH_STR);
+	    strcat(path, "STBIOS.bin");
+
+	    fp = fopen(path, "rb");
+	    if (fp)
+	    {
+		    size = fread((void *) ROM, 1, 0x40000, fp);
+		    fclose(fp);
+		    if (!is_SufamiTurbo_BIOS(ROM, size))
+			    return (FALSE);
+	    }
+	    else
+		    return (FALSE);
+
+        strcpy(ROMFilename, path);
+    }
+
 	switch (Multi.cartType)
 	{
 		case 4:
-			r = LoadSufamiTurbo(cartA, cartB);
+			r = LoadSufamiTurbo();
 			break;
 
 		case 3:
-			r = LoadSameGame(cartA, cartB);
+		case 5:
+			r = LoadBSCart();
 			break;
 
 		default:
@@ -1801,29 +1800,31 @@ bool8 CMemory::LoadMultiCart (const char *cartA, const char *cartB)
 
 	if (!r)
 	{
-		ZeroMemory(&Multi, sizeof(Multi));
+		memset(&Multi, 0, sizeof(Multi));
 		return (FALSE);
 	}
 
-	ZeroMemory(&SNESGameFixes, sizeof(SNESGameFixes));
-	SNESGameFixes.SRAMInitialValue = 0x60;
+    if (Multi.cartSizeA)
+		strcpy(ROMFilename, Multi.fileNameA);
+	else
+	if (Multi.cartSizeB)
+		strcpy(ROMFilename, Multi.fileNameB);
 
-	S9xLoadCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
+	memset(&SNESGameFixes, 0, sizeof(SNESGameFixes));
+	SNESGameFixes.SRAMInitialValue = 0x60;
 
 	InitROM();
 
-	S9xInitCheatData();
-	S9xApplyCheats();
-
 	S9xReset();
+
+	S9xDeleteCheats();
+	S9xLoadCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
 
 	return (TRUE);
 }
 
-bool8 CMemory::LoadSufamiTurbo (const char *cartA, const char *cartB)
+bool8 CMemory::LoadSufamiTurbo ()
 {
-	Multi.cartOffsetA = 0x100000;
-	Multi.cartOffsetB = 0x200000;
 	Multi.sramA = SRAM;
 	Multi.sramB = SRAM + 0x10000;
 
@@ -1831,64 +1832,19 @@ bool8 CMemory::LoadSufamiTurbo (const char *cartA, const char *cartB)
 	{
 		Multi.sramSizeA = 4; // ROM[0x37]?
 		Multi.sramMaskA = Multi.sramSizeA ? ((1 << (Multi.sramSizeA + 3)) * 128 - 1) : 0;
-
-		if (!Settings.NoPatch)
-			CheckForAnyPatch(cartA, HeaderCount != 0, Multi.cartSizeA);
-
-		strcpy(Multi.fileNameA, cartA);
-		memcpy(ROM + Multi.cartOffsetA, ROM, Multi.cartSizeA);
 	}
 
-	if (Multi.cartSizeA && !Multi.cartSizeB)
+	if (Multi.cartSizeB)
 	{
-		if (cartB && cartB[0])
-			Multi.cartSizeB = FileLoader(ROM, cartB, MAX_ROM_SIZE);
-
-		if (Multi.cartSizeB)
-		{
-			if (!is_SufamiTurbo_Cart(ROM, Multi.cartSizeB))
-				Multi.cartSizeB = 0;
-		}
+        if (!is_SufamiTurbo_Cart(ROM + Multi.cartOffsetB, Multi.cartSizeB))
+			Multi.cartSizeB = 0;
 	}
 
 	if (Multi.cartSizeB)
 	{
 		Multi.sramSizeB = 4; // ROM[0x37]?
 		Multi.sramMaskB = Multi.sramSizeB ? ((1 << (Multi.sramSizeB + 3)) * 128 - 1) : 0;
-
-		if (!Settings.NoPatch)
-			CheckForAnyPatch(cartB, HeaderCount != 0, Multi.cartSizeB);
-
-		strcpy(Multi.fileNameB, cartB);
-		memcpy(ROM + Multi.cartOffsetB, ROM, Multi.cartSizeB);
 	}
-
-	FILE	*fp;
-	size_t	size;
-	char	path[PATH_MAX + 1];
-
-	strcpy(path, S9xGetDirectory(BIOS_DIR));
-	strcat(path, SLASH_STR);
-	strcat(path, "STBIOS.bin");
-
-	fp = fopen(path, "rb");
-	if (fp)
-	{
-		size = fread((void *) ROM, 1, 0x40000, fp);
-		fclose(fp);
-		if (!is_SufamiTurbo_BIOS(ROM, size))
-			return (FALSE);
-	}
-	else
-		return (FALSE);
-
-	if (Multi.cartSizeA)
-		strcpy(ROMFilename, Multi.fileNameA);
-	else
-	if (Multi.cartSizeB)
-		strcpy(ROMFilename, Multi.fileNameB);
-	else
-		strcpy(ROMFilename, path);
 
 	LoROM = TRUE;
 	HiROM = FALSE;
@@ -1897,38 +1853,52 @@ bool8 CMemory::LoadSufamiTurbo (const char *cartA, const char *cartB)
 	return (TRUE);
 }
 
-bool8 CMemory::LoadSameGame (const char *cartA, const char *cartB)
+bool8 CMemory::LoadBSCart ()
 {
-	Multi.cartOffsetA = 0;
-	Multi.cartOffsetB = 0x200000;
 	Multi.sramA = SRAM;
 	Multi.sramB = NULL;
 
-	Multi.sramSizeA = ROM[0xffd8];
+	if (LoROM)
+		Multi.sramSizeA = ROM[0x7fd8];
+	else
+		Multi.sramSizeA = ROM[0xffd8];
+
 	Multi.sramMaskA = Multi.sramSizeA ? ((1 << (Multi.sramSizeA + 3)) * 128 - 1) : 0;
 	Multi.sramSizeB = 0;
 	Multi.sramMaskB = 0;
 
-	if (!Settings.NoPatch)
-		CheckForAnyPatch(cartA, HeaderCount != 0, Multi.cartSizeA);
+	CalculatedSize = Multi.cartSizeA;
 
-	strcpy(Multi.fileNameA, cartA);
+	if (Multi.cartSizeB == 0 && Multi.cartSizeA <= (int32)(MAX_ROM_SIZE - 0x100000 - Multi.cartOffsetA))
+	{
+		//Initialize 1MB Empty Memory Pack only if cart B is cleared
+		//It does not make a Memory Pack if game is loaded like a normal ROM
+		Multi.cartOffsetB = Multi.cartOffsetA + CalculatedSize;
+		Multi.cartSizeB = 0x100000;
+		memset(Memory.ROM + Multi.cartOffsetB, 0xFF, 0x100000);
+	}
 
-	if (cartB && cartB[0])
-		Multi.cartSizeB = FileLoader(ROM + Multi.cartOffsetB, cartB, MAX_ROM_SIZE - Multi.cartOffsetB);
+	return (TRUE);
+}
+
+bool8 CMemory::LoadGNEXT ()
+{
+	Multi.sramA = SRAM;
+	Multi.sramB = NULL;
+
+	Multi.sramSizeA = ROM[0x7fd8];
+	Multi.sramMaskA = Multi.sramSizeA ? ((1 << (Multi.sramSizeA + 3)) * 128 - 1) : 0;
+	Multi.sramSizeB = 0;
+	Multi.sramMaskB = 0;
 
 	if (Multi.cartSizeB)
 	{
-		if (!is_SameGame_Add_On(ROM + Multi.cartOffsetB, Multi.cartSizeB))
+		if (!is_GNEXT_Add_On(ROM + Multi.cartOffsetB, Multi.cartSizeB))
 			Multi.cartSizeB = 0;
-		else
-			strcpy(Multi.fileNameB, cartB);
 	}
 
-	strcpy(ROMFilename, Multi.fileNameA);
-
-	LoROM = FALSE;
-	HiROM = TRUE;
+	LoROM = TRUE;
+	HiROM = FALSE;
 	CalculatedSize = Multi.cartSizeA;
 
 	return (TRUE);
@@ -1937,13 +1907,13 @@ bool8 CMemory::LoadSameGame (const char *cartA, const char *cartB)
 bool8 CMemory::LoadSRTC (void)
 {
 	FILE	*fp;
-	size_t	ignore;
 
 	fp = fopen(S9xGetFilename(".rtc", SRAM_DIR), "rb");
 	if (!fp)
 		return (FALSE);
 
-	ignore = fread(RTCData.reg, 1, 20, fp);
+	if (fread(RTCData.reg, 1, 20, fp) < 20)
+		memset (RTCData.reg, 0, 20);
 	fclose(fp);
 
 	return (TRUE);
@@ -1952,13 +1922,15 @@ bool8 CMemory::LoadSRTC (void)
 bool8 CMemory::SaveSRTC (void)
 {
 	FILE	*fp;
-	size_t	ignore;
 
 	fp = fopen(S9xGetFilename(".rtc", SRAM_DIR), "wb");
 	if (!fp)
 		return (FALSE);
 
-	ignore = fwrite(RTCData.reg, 1, 20, fp);
+	if (fwrite(RTCData.reg, 1, 20, fp) < 20)
+	{
+		printf ("Failed to save clock data.\n");
+	}
 	fclose(fp);
 
 	return (TRUE);
@@ -1970,7 +1942,8 @@ void CMemory::ClearSRAM (bool8 onlyNonSavedSRAM)
 		if (!(Settings.SuperFX && ROMType < 0x15) && !(Settings.SA1 && ROMType == 0x34)) // can have SRAM
 			return;
 
-	memset(SRAM, SNESGameFixes.SRAMInitialValue, 0x20000);
+	// TODO: If SRAM size changes change this value as well
+	memset(SRAM, SNESGameFixes.SRAMInitialValue, 0x80000);
 }
 
 bool8 CMemory::LoadSRAM (const char *filename)
@@ -2005,15 +1978,17 @@ bool8 CMemory::LoadSRAM (const char *filename)
 	}
 
 	size = SRAMSize ? (1 << (SRAMSize + 3)) * 128 : 0;
-	if (size > 0x20000)
-		size = 0x20000;
+	if (LoROM)
+		size = size < 0x70000 ? size : 0x70000;
+	else if (HiROM)
+		size = size < 0x40000 ? size : 0x40000;
 
 	if (size)
 	{
 		file = fopen(sramName, "rb");
 		if (file)
 		{
-			len = fread((char *) SRAM, 1, 0x20000, file);
+			len = fread((char *) SRAM, 1, size, file);
 			fclose(file);
 			if (len - size == 512)
 				memmove(SRAM, SRAM + 512, size);
@@ -2037,7 +2012,7 @@ bool8 CMemory::LoadSRAM (const char *filename)
 			file = fopen(path, "rb");
 			if (file)
 			{
-				len = fread((char *) SRAM, 1, 0x20000, file);
+				len = fread((char *) SRAM, 1, size, file);
 				fclose(file);
 				if (len - size == 512)
 					memmove(SRAM, SRAM + 512, size);
@@ -2085,32 +2060,28 @@ bool8 CMemory::SaveSRAM (const char *filename)
 		file = fopen(name, "wb");
 		if (file)
 		{
-			size_t	ignore;
-			ignore = fwrite((char *) Multi.sramB, size, 1, file);
+			if (!fwrite((char *) Multi.sramB, size, 1, file))
+				printf ("Couldn't write to subcart SRAM file.\n");
 			fclose(file);
-		#ifdef __linux
-			ignore = chown(name, getuid(), getgid());
-		#endif
 		}
 
 		strcpy(ROMFilename, temp);
     }
 
     size = SRAMSize ? (1 << (SRAMSize + 3)) * 128 : 0;
-	if (size > 0x20000)
-		size = 0x20000;
+	if (LoROM)
+		size = size < 0x70000 ? size : 0x70000;
+	else if (HiROM)
+		size = size < 0x40000 ? size : 0x40000;
 
 	if (size)
 	{
 		file = fopen(sramName, "wb");
 		if (file)
 		{
-			size_t	ignore;
-			ignore = fwrite((char *) SRAM, size, 1, file);
+			if (!fwrite((char *) SRAM, size, 1, file))
+				printf ("Couldn't write to SRAM file.\n");
 			fclose(file);
-		#ifdef __linux
-			ignore = chown(sramName, getuid(), getgid());
-		#endif
 
 			if (Settings.SRTC || Settings.SPC7110RTC)
 				SaveSRTC();
@@ -2119,6 +2090,32 @@ bool8 CMemory::SaveSRAM (const char *filename)
 		}
 	}
 
+	return (FALSE);
+}
+
+bool8 CMemory::SaveMPAK (const char *filename)
+{
+	if (Settings.BS || (Multi.cartSizeB && (Multi.cartType == 3)))
+	{
+		FILE	*file;
+		int		size;
+		char	mempakName[PATH_MAX + 1];
+
+		strcpy(mempakName, filename);
+		size = 0x100000;
+		if (size)
+		{
+			file = fopen(mempakName, "wb");
+			if (file)
+			{
+				size_t	written;
+				written = fwrite((char *)Memory.ROM + Multi.cartOffsetB, size, 1, file);
+				fclose(file);
+
+				return (written > 0);
+			}
+		}
+	}
 	return (FALSE);
 }
 
@@ -2273,10 +2270,9 @@ void CMemory::InitROM (void)
 	Settings.SETA = 0;
 	Settings.SRTC = FALSE;
 	Settings.BS = FALSE;
+	Settings.MSU1 = FALSE;
 
 	SuperFX.nRomBanks = CalculatedSize >> 15;
-
-	SA1.Executing = FALSE;
 
 	//// Parse ROM header and read ROM informatoin
 
@@ -2380,6 +2376,7 @@ void CMemory::InitROM (void)
 		// SPC7110
 		case 0xF93A:
 			Settings.SPC7110RTC = TRUE;
+			// Fall through
 		case 0xF53A:
 			Settings.SPC7110 = TRUE;
 			S9xInitSPC7110();
@@ -2401,6 +2398,11 @@ void CMemory::InitROM (void)
 		case 0x1420:
 		case 0x1520:
 		case 0x1A20:
+		// SuperFX FastROM for ROM hacks
+		case 0x1330:
+		case 0x1430:
+		case 0x1530:
+		case 0x1A30:
 			Settings.SuperFX = TRUE;
 			S9xInitSuperFX();
 			if (ROM[0x7FDA] == 0x33)
@@ -2449,6 +2451,9 @@ void CMemory::InitROM (void)
 			break;
 	}
 
+	// MSU1
+	Settings.MSU1 = S9xMSU1ROMExists();
+
 	//// Map memory and calculate checksum
 
 	Map_Initialize();
@@ -2466,7 +2471,7 @@ void CMemory::InitROM (void)
 			Map_ExtendedHiROMMap();
 		else
 		if (Multi.cartType == 3)
-			Map_SameGameHiROMMap();
+			Map_BSCartHiROMMap();
 		else
 			Map_HiROMMap();
     }
@@ -2482,7 +2487,12 @@ void CMemory::InitROM (void)
 			Map_SuperFXLoROMMap();
 		else
 		if (Settings.SA1)
-			Map_SA1LoROMMap();
+		{
+			if (Multi.cartType == 5)
+				Map_BSSA1LoROMMap();
+			else
+				Map_SA1LoROMMap();
+		}
 		else
 		if (Settings.SDD1)
 			Map_SDD1LoROMMap();
@@ -2492,6 +2502,13 @@ void CMemory::InitROM (void)
 		else
 		if (strncmp(ROMName, "WANDERERS FROM YS", 17) == 0)
 			Map_NoMAD1LoROMMap();
+		else
+		if (Multi.cartType == 3)
+			if (strncmp(ROMName, "SOUND NOVEL-TCOOL", 17) == 0 ||
+				strncmp(ROMName, "DERBY STALLION 96", 17) == 0)
+				Map_BSCartLoROMMap(1);
+			else
+				Map_BSCartLoROMMap(0);
 		else
 		if (strncmp(ROMName, "SOUND NOVEL-TCOOL", 17) == 0 ||
 			strncmp(ROMName, "DERBY STALLION 96", 17) == 0)
@@ -2527,7 +2544,10 @@ void CMemory::InitROM (void)
 
 	// CRC32
 	if (!Settings.BS || Settings.BSXItself) // Not BS Dump
+	{
 		ROMCRC32 = caCRC32(ROM, CalculatedSize);
+		sha256sum(ROM, CalculatedSize, ROMSHA256);
+	}
 	else // Convert to correct format before scan
 	{
 		int offset = HiROM ? 0xffc0 : 0x7fc0;
@@ -2539,6 +2559,7 @@ void CMemory::InitROM (void)
 		ROM[offset + 23] = 0x00;
 		// Calc
 		ROMCRC32 = caCRC32(ROM, CalculatedSize);
+		sha256sum(ROM, CalculatedSize, ROMSHA256);
 		// Convert back
 		ROM[offset + 22] = BSMagic0;
 		ROM[offset + 23] = BSMagic1;
@@ -2551,7 +2572,7 @@ void CMemory::InitROM (void)
 	if (Settings.ForcePAL)
 		Settings.PAL = TRUE;
 	else
-	if (!Settings.BS && (ROMRegion >= 2) && (ROMRegion <= 12))
+	if (!Settings.BS && (((ROMRegion >= 2) && (ROMRegion <= 12)) || ROMRegion == 18)) // 18 is used by "Tintin in Tibet (Europe) (En,Es,Sv)"
 		Settings.PAL = TRUE;
 	else
 		Settings.PAL = FALSE;
@@ -2589,6 +2610,13 @@ void CMemory::InitROM (void)
 		SET_UI_COLOR(255, 255, 0);
 	}
 
+	// Use slight blue tint to indicate ROM was patched.
+	if (Settings.IsPatched)
+	{
+		Settings.DisplayColor = BUILD_PIXEL(26, 26, 31);
+		SET_UI_COLOR(216, 216, 255);
+	}
+
 	if (Multi.cartType == 4)
 	{
 		Settings.DisplayColor = BUILD_PIXEL(0, 16, 31);
@@ -2617,7 +2645,12 @@ void CMemory::InitROM (void)
 	   and the NMI handler, time enough for an instruction or two. */
 	// Wild Guns, Mighty Morphin Power Rangers - The Fighting Edition
 	Timings.NMIDMADelay  = 24;
-	Timings.IRQPendCount = 0;
+	Timings.IRQTriggerCycles = 14;
+	Timings.APUSpeedup = 0;
+	#ifdef SNES9XGX
+	Timings.APUAllowTimeOverflow = FALSE;
+	#endif
+	S9xAPUTimingSetSpeedup(Timings.APUSpeedup);
 
 	IPPU.TotalEmulatedFrames = 0;
 
@@ -2777,7 +2810,7 @@ void CMemory::map_index (uint32 bank_s, uint32 bank_e, uint32 addr_s, uint32 add
 		for (i = addr_s; i <= addr_e; i += 0x1000)
 		{
 			p = (c << 4) | (i >> 12);
-			Map[p] = (uint8 *) index;
+			Map[p] = (uint8 *) (pint) index;
 			BlockIsROM[p] = isROM;
 			BlockIsRAM[p] = isRAM;
 		}
@@ -2804,8 +2837,16 @@ void CMemory::map_WRAM (void)
 
 void CMemory::map_LoROMSRAM (void)
 {
-	map_index(0x70, 0x7f, 0x0000, 0x7fff, MAP_LOROM_SRAM, MAP_TYPE_RAM);
-	map_index(0xf0, 0xff, 0x0000, 0x7fff, MAP_LOROM_SRAM, MAP_TYPE_RAM);
+        uint32 hi;
+
+        if (ROMSize > 11 || SRAMSize > 5)
+            hi = 0x7fff;
+        else
+            hi = 0xffff;
+
+	map_index(0x70, 0x7d, 0x0000, hi, MAP_LOROM_SRAM, MAP_TYPE_RAM);
+	if (SRAMSize > 0)
+            map_index(0xf0, 0xff, 0x0000, hi, MAP_LOROM_SRAM, MAP_TYPE_RAM);
 }
 
 void CMemory::map_HiROMSRAM (void)
@@ -2957,7 +2998,7 @@ void CMemory::Map_JumboLoROMMap (void)
 	map_System();
 
 	map_lorom_offset(0x00, 0x3f, 0x8000, 0xffff, CalculatedSize - 0x400000, 0x400000);
-	map_lorom_offset(0x40, 0x7f, 0x0000, 0xffff, CalculatedSize - 0x400000, 0x400000);
+	map_lorom_offset(0x40, 0x7f, 0x0000, 0xffff, CalculatedSize - 0x600000, 0x600000);
 	map_lorom_offset(0x80, 0xbf, 0x8000, 0xffff, 0x400000, 0);
 	map_lorom_offset(0xc0, 0xff, 0x0000, 0xffff, 0x400000, 0x200000);
 
@@ -3112,10 +3153,11 @@ void CMemory::Map_SDD1LoROMMap (void)
 	map_lorom(0x00, 0x3f, 0x8000, 0xffff, CalculatedSize);
 	map_lorom(0x80, 0xbf, 0x8000, 0xffff, CalculatedSize);
 
-	map_hirom_offset(0x40, 0x7f, 0x0000, 0xffff, CalculatedSize, 0);
+	map_hirom_offset(0x60, 0x7f, 0x0000, 0xffff, CalculatedSize, 0);
 	map_hirom_offset(0xc0, 0xff, 0x0000, 0xffff, CalculatedSize, 0); // will be overwritten dynamically
 
 	map_index(0x70, 0x7f, 0x0000, 0x7fff, MAP_LOROM_SRAM, MAP_TYPE_RAM);
+	map_index(0xa0, 0xbf, 0x6000, 0x7fff, MAP_LOROM_SRAM, MAP_TYPE_RAM);
 
 	map_WRAM();
 
@@ -3131,6 +3173,74 @@ void CMemory::Map_SA1LoROMMap (void)
 	map_lorom(0x80, 0xbf, 0x8000, 0xffff, CalculatedSize);
 
 	map_hirom_offset(0xc0, 0xff, 0x0000, 0xffff, CalculatedSize, 0);
+
+	#ifdef SNES9XGX
+	if (match_id("AZIJ"))                    { // Dragon Ball Z - Hyper Dimension (J)	
+		map_space(0x00, 0x3f, 0x3000, 0x3fff, FillRAM);
+		map_space(0x80, 0xbf, 0x3000, 0x3fff, FillRAM);
+	}
+	else {
+		map_space(0x00, 0x3f, 0x3000, 0x37ff, FillRAM);
+		map_space(0x80, 0xbf, 0x3000, 0x37ff, FillRAM);
+	}
+	#endif
+
+
+	map_index(0x00, 0x3f, 0x6000, 0x7fff, MAP_BWRAM, MAP_TYPE_I_O);
+	map_index(0x80, 0xbf, 0x6000, 0x7fff, MAP_BWRAM, MAP_TYPE_I_O);
+
+	#ifdef SNES9XGX
+	if (match_id("AZIJ"))                    { // Dragon Ball Z - Hyper Dimension (J)	
+		for (int c = 0x40; c < 0x80; c++)
+			map_space(c, c, 0x0000, 0xffff, SRAM + (c & 1) * 0x10000);
+	}
+	else {
+		for (int c = 0x40; c < 0x4f; c++)
+			map_space(c, c, 0x0000, 0xffff, SRAM + (c & 3) * 0x10000);
+	}
+	#endif
+
+	map_WRAM();
+
+	map_WriteProtectROM();
+
+	// Now copy the map and correct it for the SA1 CPU.
+	memmove((void *) SA1.Map, (void *) Map, sizeof(Map));
+	memmove((void *) SA1.WriteMap, (void *) WriteMap, sizeof(WriteMap));
+
+	// SA-1 Banks 00->3f and 80->bf
+	for (int c = 0x000; c < 0x400; c += 0x10)
+	{
+		SA1.Map[c + 0] = SA1.Map[c + 0x800] = FillRAM + 0x3000;
+		SA1.Map[c + 1] = SA1.Map[c + 0x801] = (uint8 *) MAP_NONE;
+		SA1.WriteMap[c + 0] = SA1.WriteMap[c + 0x800] = FillRAM + 0x3000;
+		SA1.WriteMap[c + 1] = SA1.WriteMap[c + 0x801] = (uint8 *) MAP_NONE;
+	}
+
+	// SA-1 Banks 40->4f
+	for (int c = 0x400; c < 0x500; c++)
+		SA1.Map[c] = SA1.WriteMap[c] = (uint8*)MAP_SA1RAM;
+
+	// SA-1 Banks 60->6f
+	for (int c = 0x600; c < 0x700; c++)
+		SA1.Map[c] = SA1.WriteMap[c] = (uint8 *) MAP_BWRAM_BITMAP;
+
+	// WRAM is inaccessable
+	for (int c = 0x7e0; c < 0x800; c++)
+		SA1.Map[c] = SA1.WriteMap[c] = (uint8 *) MAP_NONE;
+
+	BWRAM = SRAM;
+}
+
+void CMemory::Map_BSSA1LoROMMap(void)
+{
+	printf("Map_BSSA1LoROMMap\n");
+	map_System();
+
+	map_lorom_offset(0x00, 0x3f, 0x8000, 0xffff, Multi.cartSizeA, Multi.cartOffsetA);
+	map_lorom_offset(0x80, 0xbf, 0x8000, 0xffff, Multi.cartSizeA, Multi.cartOffsetA);
+
+	map_hirom_offset(0xc0, 0xff, 0x0000, 0xffff, Multi.cartSizeA, Multi.cartOffsetA);
 
 	map_space(0x00, 0x3f, 0x3000, 0x3fff, FillRAM);
 	map_space(0x80, 0xbf, 0x3000, 0x3fff, FillRAM);
@@ -3160,6 +3270,10 @@ void CMemory::Map_SA1LoROMMap (void)
 	// SA-1 Banks 60->6f
 	for (int c = 0x600; c < 0x700; c++)
 		SA1.Map[c] = SA1.WriteMap[c] = (uint8 *) MAP_BWRAM_BITMAP;
+
+	// WRAM is inaccessable
+	for (int c = 0x7e0; c < 0x800; c++)
+		SA1.Map[c] = SA1.WriteMap[c] = (uint8 *) MAP_NONE;
 
 	BWRAM = SRAM;
 }
@@ -3199,11 +3313,65 @@ void CMemory::Map_ExtendedHiROMMap (void)
 	map_WriteProtectROM();
 }
 
-void CMemory::Map_SameGameHiROMMap (void)
+void CMemory::Map_SPC7110HiROMMap (void)
 {
-	printf("Map_SameGameHiROMMap\n");
+	printf("Map_SPC7110HiROMMap\n");
 	map_System();
 
+	map_index(0x00, 0x00, 0x6000, 0x7fff, MAP_HIROM_SRAM, MAP_TYPE_RAM);
+	map_hirom(0x00, 0x0f, 0x8000, 0xffff, CalculatedSize);
+	map_index(0x30, 0x30, 0x6000, 0x7fff, MAP_HIROM_SRAM, MAP_TYPE_RAM);
+	if(Memory.ROMSize >= 13)
+		map_hirom_offset(0x40, 0x4f, 0x0000, 0xffff, CalculatedSize, 0x600000);
+	map_index(0x50, 0x50, 0x0000, 0xffff, MAP_SPC7110_DRAM, MAP_TYPE_ROM);
+	map_hirom(0x80, 0x8f, 0x8000, 0xffff, CalculatedSize);
+	map_hirom_offset(0xc0, 0xcf, 0x0000, 0xffff, CalculatedSize, 0);
+	map_index(0xd0, 0xff, 0x0000, 0xffff, MAP_SPC7110_ROM,  MAP_TYPE_ROM);
+
+	map_WRAM();
+
+	map_WriteProtectROM();
+}
+
+void CMemory::Map_BSCartLoROMMap(uint8 mapping)
+{
+	printf("Map_BSCartLoROMMap\n");
+
+	BSX.MMC[0x02] = 0x00;
+	BSX.MMC[0x0C] = 0x80;
+
+	map_System();
+
+	if (mapping)
+	{
+		map_lorom_offset(0x00, 0x1f, 0x8000, 0xffff, 0x100000, 0);
+		map_lorom_offset(0x20, 0x3f, 0x8000, 0xffff, 0x100000, 0x100000);
+		map_lorom_offset(0x80, 0x9f, 0x8000, 0xffff, 0x100000, 0x200000);
+		map_lorom_offset(0xa0, 0xbf, 0x8000, 0xffff, 0x100000, 0x100000);
+	}
+	else
+	{
+		map_lorom(0x00, 0x3f, 0x8000, 0xffff, CalculatedSize);
+		map_lorom(0x40, 0x7f, 0x0000, 0x7fff, CalculatedSize);
+		map_lorom(0x80, 0xbf, 0x8000, 0xffff, CalculatedSize);
+		map_lorom(0xc0, 0xff, 0x0000, 0x7fff, CalculatedSize);
+	}
+
+	map_LoROMSRAM();
+	map_index(0xc0, 0xef, 0x0000, 0xffff, MAP_BSX, MAP_TYPE_RAM);
+	map_WRAM();
+
+	map_WriteProtectROM();
+}
+
+void CMemory::Map_BSCartHiROMMap(void)
+{
+	printf("Map_BSCartHiROMMap\n");
+
+	BSX.MMC[0x02] = 0x80;
+	BSX.MMC[0x0C] = 0x80;
+
+	map_System();
 	map_hirom_offset(0x00, 0x1f, 0x8000, 0xffff, Multi.cartSizeA, Multi.cartOffsetA);
 	map_hirom_offset(0x20, 0x3f, 0x8000, 0xffff, Multi.cartSizeB, Multi.cartOffsetB);
 	map_hirom_offset(0x40, 0x5f, 0x0000, 0xffff, Multi.cartSizeA, Multi.cartOffsetA);
@@ -3211,27 +3379,20 @@ void CMemory::Map_SameGameHiROMMap (void)
 	map_hirom_offset(0x80, 0x9f, 0x8000, 0xffff, Multi.cartSizeA, Multi.cartOffsetA);
 	map_hirom_offset(0xa0, 0xbf, 0x8000, 0xffff, Multi.cartSizeB, Multi.cartOffsetB);
 	map_hirom_offset(0xc0, 0xdf, 0x0000, 0xffff, Multi.cartSizeA, Multi.cartOffsetA);
-	map_hirom_offset(0xe0, 0xff, 0x0000, 0xffff, Multi.cartSizeB, Multi.cartOffsetB);
+
+	if ((ROM[Multi.cartOffsetB + 0xFF00] == 0x4D)
+		&& (ROM[Multi.cartOffsetB + 0xFF02] == 0x50)
+		&& ((ROM[Multi.cartOffsetB + 0xFF06] & 0xF0) == 0x70))
+	{
+		//Type 7 Memory Pack detection - if detected, emulate it as Mask ROM
+		map_hirom_offset(0xe0, 0xff, 0x0000, 0xffff, Multi.cartSizeB, Multi.cartOffsetB);
+	}
+	else
+	{
+		map_index(0xe0, 0xff, 0x0000, 0xffff, MAP_BSX, MAP_TYPE_RAM);
+	}
 
 	map_HiROMSRAM();
-	map_WRAM();
-
-	map_WriteProtectROM();
-}
-
-void CMemory::Map_SPC7110HiROMMap (void)
-{
-	printf("Map_SPC7110HiROMMap\n");
-	map_System();
-
-	map_index(0x00, 0x00, 0x6000, 0x7fff, MAP_HIROM_SRAM, MAP_TYPE_RAM);
-	map_hirom(0x00, 0x0f, 0x8000, 0xffff, CalculatedSize);	
-	map_index(0x30, 0x30, 0x6000, 0x7fff, MAP_HIROM_SRAM, MAP_TYPE_RAM);
-	map_index(0x50, 0x50, 0x0000, 0xffff, MAP_SPC7110_DRAM, MAP_TYPE_ROM);
-	map_hirom(0x80, 0x8f, 0x8000, 0xffff, CalculatedSize);
-	map_hirom_offset(0xc0, 0xcf, 0x0000, 0xffff, CalculatedSize, 0);
-	map_index(0xd0, 0xff, 0x0000, 0xffff, MAP_SPC7110_ROM,  MAP_TYPE_ROM);
-
 	map_WRAM();
 
 	map_WriteProtectROM();
@@ -3252,7 +3413,7 @@ uint16 CMemory::checksum_calc_sum (uint8 *data, uint32 length)
 uint16 CMemory::checksum_mirror_sum (uint8 *start, uint32 &length, uint32 mask)
 {
 	// from NSRT
-	while (!(length & mask))
+	while (!(length & mask) && mask)
 		mask >>= 1;
 
 	uint16	part1 = checksum_calc_sum(start, mask);
@@ -3351,7 +3512,7 @@ const char * CMemory::KartContents (void)
 	static char			str[64];
 	static const char	*contents[3] = { "ROM", "ROM+RAM", "ROM+RAM+BAT" };
 
-	char	chip[16];
+	char	chip[20];
 
 	if (ROMType == 0 && !Settings.BS)
 		return ("ROM");
@@ -3396,6 +3557,9 @@ const char * CMemory::KartContents (void)
 		sprintf(chip, "+DSP-%d", Settings.DSP);
 	else
 		strcpy(chip, "");
+
+	if (Settings.MSU1)
+		sprintf(chip + strlen(chip), "+MSU-1");
 
 	sprintf(str, "%s%s", contents[(ROMType & 0xf) % 3], chip);
 
@@ -3501,33 +3665,20 @@ bool8 CMemory::match_id (const char *str)
 
 void CMemory::ApplyROMFixes (void)
 {
-	Settings.Shutdown = Settings.ShutdownMaster;
 	Settings.BlockInvalidVRAMAccess = Settings.BlockInvalidVRAMAccessMaster;
 
-	//// Warnings
-
-	// Reject strange hacked games
-	if ((ROMCRC32 == 0x6810aa95) ||
-		(ROMCRC32 == 0x340f23e5) ||
-		(ROMCRC32 == 0x77fd806a) ||
-		(match_nn("HIGHWAY BATTLE 2")) ||
-		(match_na("FX SKIING NINTENDO 96") && (ROM[0x7fda] == 0)) ||
-		(match_nn("HONKAKUHA IGO GOSEI")   && (ROM[0xffd5] != 0x31)))
-	{
-		Settings.DisplayColor = BUILD_PIXEL(31, 0, 0);
-		SET_UI_COLOR(255, 0, 0);
-	}
-
-	//// APU timing hacks :(
-
-	Timings.APUSpeedup = 0;
-	Timings.APUAllowTimeOverflow = FALSE;
+	if (Settings.DisableGameSpecificHacks)
+		return;
 
 	if (!Settings.DisableGameSpecificHacks)
 	{
+		// APU timing hacks
 		if (match_id("AVCJ"))                                      // Rendering Ranger R2
 			Timings.APUSpeedup = 4;
+		if (match_na("CIRCUIT USA"))
+			Timings.APUSpeedup = 3;
 
+	#ifdef SNES9XGX
 		if (match_na("GAIA GENSOUKI 1 JPN")                     || // Gaia Gensouki
 			match_id("JG  ")                                    || // Illusion of Gaia
 			match_id("CQ  ")                                    || // Stunt Race FX
@@ -3538,7 +3689,7 @@ void CMemory::ApplyROMFixes (void)
 			match_nn("ACTRAISER")                               || // Actraiser
 			match_nn("ActRaiser-2")                             || // Actraiser 2
 			match_id("AQT")                                     || // Tenchi Souzou, Terranigma
-			match_id("ATV")                                     || // Tales of Phantasia
+			match_id("ATV") || match_id("ATVJ")                 || // Tales of Phantasia / Teiruzu obu Fantajia
 			match_id("ARF")                                     || // Star Ocean
 			match_id("APR")                                     || // Zen-Nippon Pro Wrestling 2 - 3-4 Budoukan
 			match_id("A4B")                                     || // Super Bomberman 4
@@ -3563,353 +3714,112 @@ void CMemory::ApplyROMFixes (void)
 			match_na("HEIWA Parlor!Mini8")                      || // Parlor mini 8
 			match_nn("SANKYO Fever! \xCC\xA8\xB0\xCA\xDE\xB0!"))   // SANKYO Fever! Fever!
 			Timings.APUSpeedup = 1;
-
-		if (match_na ("EARTHWORM JIM 2")						|| // Earthworm Jim 2
-			match_na ("NBA Hangtime")							|| // NBA Hang Time
-			match_na ("MSPACMAN")								|| // Ms Pacman
-			match_na ("THE MASK")								|| // The Mask
-			match_na ("PRIMAL RAGE")							|| // Primal Rage
-			match_na ("PORKY PIGS HAUNTED")						|| // Porky Pig's Haunted Holiday
-			match_na ("Big Sky Trooper")						|| // Big Sky Trooper
-			match_id ("A35")									|| // Mechwarrior 3050 / Battle Tech 3050
-			match_na ("DOOM TROOPERS"))							   // Doom Troopers
+	
+		if (match_na ("EARTHWORM JIM 2")			    || // Earthworm Jim 2
+			match_na ("NBA Hangtime")			    || // NBA Hang Time
+			match_na ("MSPACMAN")				    || // Ms Pacman
+			match_na ("THE MASK")				    || // The Mask
+			match_na ("PRIMAL RAGE")			    || // Primal Rage
+			match_na ("PORKY PIGS HAUNTED")			    || // Porky Pig's Haunted Holiday
+			match_na ("Big Sky Trooper")			    || // Big Sky Trooper
+			match_id ("A35")				    || // Mechwarrior 3050 / Battle Tech 3050
+			match_na ("DOOM TROOPERS"))			       // Doom Troopers
 			Timings.APUAllowTimeOverflow = TRUE;
+		
+		if (match_id("ARWJ") || match_id("ARWE") 				|| // Super Mario RPG
+			match_id("AFJJ") || match_id("AFJE") 				|| // Kirby's Dream Land 3
+			match_na("\xC3\xDD\xBC\xC9\xB3\xC0"))                		 { // Tenshi no Uta
+			Settings.OneClockCycle = 8;
+		}
+		else {
+			Settings.OneClockCycle = 6;
+		}
+	#endif
 	}
 
 	S9xAPUTimingSetSpeedup(Timings.APUSpeedup);
+	#ifdef SNES9XGX
 	S9xAPUAllowTimeOverflow(Timings.APUAllowTimeOverflow);
-
-	//// Other timing hacks :(
-
-	Timings.HDMAStart   = SNES_HDMA_START_HC + Settings.HDMATimingHack - 100;
-	Timings.HBlankStart = SNES_HBLANK_START_HC + Timings.HDMAStart - SNES_HDMA_START_HC;
-
-	if (!Settings.DisableGameSpecificHacks)
-	{
-		// The delay to sync CPU and DMA which Snes9x cannot emulate.
-		// Some games need really severe delay timing...
-		if (match_na("BATTLE GRANDPRIX")) // Battle Grandprix
-		{
-			Timings.DMACPUSync = 20;
-			printf("DMA sync: %d\n", Timings.DMACPUSync);
+	#endif
+	
+	#ifdef SNES9XGX
+	if (match_id("YI  ")) { // Super Mario World 2 - Yoshi's Island 
+			Timings.SuperFX2CoreSpeed = 8 / 3;
 		}
+		else {
+			Timings.SuperFX2CoreSpeed = 5 / 2;
+		}
+	#endif
+	
+	// Other timing hacks
+	// The delay to sync CPU and DMA which Snes9x does not emulate.
+	// Some games need really severe delay timing...
+	if (match_na("BATTLE GRANDPRIX")) // Battle Grandprix
+		Timings.DMACPUSync = 20;
+	else if (match_na("KORYU NO MIMI ENG")) // Koryu no Mimi translation by rpgone)
+	{
+		// An infinite loop reads $4210 and checks NMI flag. This only works if LDA instruction executes before the NMI triggers,
+		// which doesn't work very well with s9x's default DMA timing.
+		Timings.DMACPUSync = 20;
 	}
 
-	if (!Settings.DisableGameSpecificHacks)
+	if (Timings.DMACPUSync != 18)
+		printf("DMA sync: %d\n", Timings.DMACPUSync);
+
+	// SRAM initial value
+	if (match_na("HITOMI3"))
 	{
-		// Opcode-based emulators cannot escape from "reading $4211/BPL" infinite loop...
-		// The true IRQ can be triggered inside an opcode.
-		if (match_na("TRAVERSE")) // Traverse - Starlight & Prairie
-		{
-			Timings.IRQPendCount = 1;
-			printf("IRQ count hack: %d\n", Timings.IRQPendCount);
-		}
-
-		// An infinite loop reads $4212 and waits V-blank end, whereas VIRQ is set V=0.
-		// If Snes9x succeeds to escape from the loop before jumping into the IRQ handler, the game goes further.
-		// If Snes9x jumps into the IRQ handler before escaping from the loop,
-		// Snes9x cannot escape from the loop permanently because the RTI is in the next V-blank.
-		if (match_na("Aero the AcroBat 2"))
-		{
-			Timings.IRQPendCount = 2;
-			printf("IRQ count hack: %d\n", Timings.IRQPendCount);
-		}
-
-		if (match_na("BATTLE BLAZE"))
-		{
-			Timings.IRQPendCount = 1;
-			printf("IRQ count hack: %d\n", Timings.IRQPendCount);
-		}
+		SRAMSize = 1;
+		SRAMMask = ((1 << (SRAMSize + 3)) * 128) - 1;
 	}
 
-	if (!Settings.DisableGameSpecificHacks)
+	// SRAM value fixes
+	if (match_na("SUPER DRIFT OUT")      || // Super Drift Out
+		match_na("S.F.S.95 della SerieA") ||
+		match_id("AACJ") || // Nichibutsu Arcade Classics
+		match_na("SATAN IS OUR FATHER!") ||
+		match_na("goemon 4"))               // Ganbare Goemon Kirakira Douchuu
+		SNESGameFixes.SRAMInitialValue = 0x00;
+
+	// Additional game fixes by sanmaiwashi ...
+	// XXX: unnecessary?
+	if (match_na("SFX \xC5\xB2\xC4\xB6\xDE\xDD\xC0\xDE\xD1\xD3\xC9\xB6\xDE\xC0\xD8 1")) // SD Gundam Gaiden - Knight Gundam Monogatari
+		SNESGameFixes.SRAMInitialValue = 0x6b;
+
+	// others: BS and ST-01x games are 0x00.
+
+	// OAM hacks :(
+	// OAM hacks because we don't fully understand the behavior of the SNES.
+	// Totally wacky display in 2P mode...
+	// seems to need a disproven behavior, so we're definitely overlooking some other bug?
+	if (match_nn("UNIRACERS")) // Uniracers
 	{
-		// XXX: What's happening?
-		if (match_na("X-MEN")) // Spider-Man and the X-Men
-		{
-			Settings.BlockInvalidVRAMAccess = FALSE;
-			printf("Invalid VRAM access hack\n");
-		}
+		SNESGameFixes.Uniracers = TRUE;
+		printf("Applied Uniracers hack.\n");
 	}
 
-	//// CPU speed-ups (CPU_Shutdown())
-
-	// Force disabling a speed-up hack
-    // Games which spool sound samples between the SNES and sound CPU using
-    // H-DMA as the sample is playing.
-	if (match_na("EARTHWORM JIM 2") || // Earth Worm Jim 2
-		match_na("PRIMAL RAGE")     || // Primal Rage
-		match_na("CLAY FIGHTER")    || // Clay Fighter
-		match_na("ClayFighter 2")   || // Clay Fighter 2
-		match_na("WeaponLord")      || // Weapon Lord
-		match_nn("WAR 2410")        || // War 2410
-		match_id("ARF")             || // Star Ocean
-		match_id("A4WJ")            || // Mini Yonku Shining Scorpion - Let's & Go!!
-		match_nn("NHL")             ||
-		match_nc("MADDEN"))
-	{
-		if (Settings.Shutdown)
-			printf("Disabled CPU shutdown hack.\n");
-		Settings.Shutdown = FALSE;
-	}
-
-	// SA-1
-	SA1.WaitAddress = 0xffffffff;
-	SA1.WaitByteAddress1 = NULL;
-	SA1.WaitByteAddress2 = NULL;
-
-	if (Settings.SA1)
-	{
-		// Itoi Shigesato no Bass Tsuri No.1 (J)
-		if (match_id("ZBPJ"))
-		{
-			SA1.WaitAddress = 0x0093f1;
-			SA1.WaitByteAddress1 = FillRAM + 0x304a;
-		}
-
-		// Daisenryaku Expert WWII (J)
-		if (match_id("AEVJ"))
-		{
-			SA1.WaitAddress = 0x0ed18d;
-			SA1.WaitByteAddress1 = FillRAM + 0x3000;
-		}
-
-		// Derby Jockey 2 (J)
-		if (match_id("A2DJ"))
-		{
-			SA1.WaitAddress = 0x008b62;
-		}
-
-		// Dragon Ball Z - Hyper Dimension (J)
-		if (match_id("AZIJ"))
-		{
-			SA1.WaitAddress = 0x008083;
-			SA1.WaitByteAddress1 = FillRAM + 0x3020;
-		}
-
-		// SD Gundam G NEXT (J)
-		if (match_id("ZX3J"))
-		{
-			SA1.WaitAddress = 0x0087f2;
-			SA1.WaitByteAddress1 = FillRAM + 0x30c4;
-		}
-
-		// Shougi no Hanamichi (J)
-		if (match_id("AARJ"))
-		{
-			SA1.WaitAddress = 0xc1f85a;
-			SA1.WaitByteAddress1 = SRAM + 0x0c64;
-			SA1.WaitByteAddress2 = SRAM + 0x0c66;
-		}
-
-		// Asahi Shinbun Rensai Katou Hifumi Kudan Shougi Shingiryu (J)
-		if (match_id("A23J"))
-		{
-			SA1.WaitAddress = 0xc25037;
-			SA1.WaitByteAddress1 = SRAM + 0x0c06;
-			SA1.WaitByteAddress2 = SRAM + 0x0c08;
-		}
-
-		// Taikyoku Igo - Idaten (J)
-		if (match_id("AIIJ"))
-		{
-			SA1.WaitAddress = 0xc100be;
-			SA1.WaitByteAddress1 = SRAM + 0x1002;
-			SA1.WaitByteAddress2 = SRAM + 0x1004;
-		}
-
-		// Takemiya Masaki Kudan no Igo Taishou (J)
-		if (match_id("AITJ"))
-		{
-			SA1.WaitAddress = 0x0080b7;
-		}
-
-		// J. League '96 Dream Stadium (J)
-		if (match_id("AJ6J"))
-		{
-			SA1.WaitAddress = 0xc0f74a;
-		}
-
-		// Jumpin' Derby (J)
-		if (match_id("AJUJ"))
-		{
-			SA1.WaitAddress = 0x00d926;
-		}
-
-		// Kakinoki Shougi (J)
-		if (match_id("AKAJ"))
-		{
-			SA1.WaitAddress = 0x00f070;
-		}
-
-		// Hoshi no Kirby 3 (J), Kirby's Dream Land 3 (U)
-		if (match_id("AFJJ") || match_id("AFJE"))
-		{
-			SA1.WaitAddress = 0x0082d4;
-			SA1.WaitByteAddress1 = SRAM + 0x72a4;
-		}
-
-		// Hoshi no Kirby - Super Deluxe (J)
-		if (match_id("AKFJ"))
-		{
-			SA1.WaitAddress = 0x008c93;
-			SA1.WaitByteAddress1 = FillRAM + 0x300a;
-			SA1.WaitByteAddress2 = FillRAM + 0x300e;
-		}
-
-		// Kirby Super Star (U)
-		if (match_id("AKFE"))
-		{
-			SA1.WaitAddress = 0x008cb8;
-			SA1.WaitByteAddress1 = FillRAM + 0x300a;
-			SA1.WaitByteAddress2 = FillRAM + 0x300e;
-		}
-
-		// Super Mario RPG (J), (U)
-		if (match_id("ARWJ") || match_id("ARWE"))
-		{
-			SA1.WaitAddress = 0xc0816f;
-			SA1.WaitByteAddress1 = FillRAM + 0x3000;
-		}
-
-		// Marvelous (J)
-		if (match_id("AVRJ"))
-		{
-			SA1.WaitAddress = 0x0085f2;
-			SA1.WaitByteAddress1 = FillRAM + 0x3024;
-		}
-
-		// Harukanaru Augusta 3 - Masters New (J)
-		if (match_id("AO3J"))
-		{
-			SA1.WaitAddress = 0x00dddb;
-			SA1.WaitByteAddress1 = FillRAM + 0x37b4;
-		}
-
-		// Jikkyou Oshaberi Parodius (J)
-		if (match_id("AJOJ"))
-		{
-			SA1.WaitAddress = 0x8084e5;
-		}
-
-		// Super Bomberman - Panic Bomber W (J)
-		if (match_id("APBJ"))
-		{
-			SA1.WaitAddress = 0x00857a;
-		}
-
-		// Pebble Beach no Hatou New - Tournament Edition (J)
-		if (match_id("AONJ"))
-		{
-			SA1.WaitAddress = 0x00df33;
-			SA1.WaitByteAddress1 = FillRAM + 0x37b4;
-		}
-
-		// PGA European Tour (U)
-		if (match_id("AEPE"))
-		{
-			SA1.WaitAddress = 0x003700;
-			SA1.WaitByteAddress1 = FillRAM + 0x3102;
-		}
-
-		// PGA Tour 96 (U)
-		if (match_id("A3GE"))
-		{
-			SA1.WaitAddress = 0x003700;
-			SA1.WaitByteAddress1 = FillRAM + 0x3102;
-		}
-
-		// Power Rangers Zeo - Battle Racers (U)
-		if (match_id("A4RE"))
-		{
-			SA1.WaitAddress = 0x009899;
-			SA1.WaitByteAddress1 = FillRAM + 0x3000;
-		}
-
-		// SD F-1 Grand Prix (J)
-		if (match_id("AGFJ"))
-		{
-			SA1.WaitAddress = 0x0181bc;
-		}
-
-		// Saikousoku Shikou Shougi Mahjong (J)
-		if (match_id("ASYJ"))
-		{
-			SA1.WaitAddress = 0x00f2cc;
-			SA1.WaitByteAddress1 = SRAM + 0x7ffe;
-			SA1.WaitByteAddress2 = SRAM + 0x7ffc;
-		}
-
-		// Shougi Saikyou II (J)
-		if (match_id("AX2J"))
-		{
-			SA1.WaitAddress = 0x00d675;
-		}
-
-		// Mini Yonku Shining Scorpion - Let's & Go!! (J)
-		if (match_id("A4WJ"))
-		{
-			SA1.WaitAddress = 0xc048be;
-		}
-
-		// Shin Shougi Club (J)
-		if (match_id("AHJJ"))
-		{
-			SA1.WaitAddress = 0xc1002a;
-			SA1.WaitByteAddress1 = SRAM + 0x0806;
-			SA1.WaitByteAddress2 = SRAM + 0x0808;
-		}
-
-		// rest games:
-		// Habu Meijin no Omoshiro Shougi (J)
-		// Hayashi Kaihou Kudan no Igo Taidou (J)
-		// Shougi Saikyou (J)
-		// Super Robot Wars Gaiden (J)
-		// Super Shougi 3 - Kitaihei (J)
-	}
-
-	//// SRAM initial value
-
-	if (!Settings.DisableGameSpecificHacks)
-	{
-		if (match_na("HITOMI3"))
-		{
-			SRAMSize = 1;
-			SRAMMask = ((1 << (SRAMSize + 3)) * 128) - 1;
-		}
-
-		// SRAM value fixes
-		if (match_na("SUPER DRIFT OUT")      || // Super Drift Out
-			match_na("SATAN IS OUR FATHER!") ||
-			match_na("goemon 4"))               // Ganbare Goemon Kirakira Douchuu
-			SNESGameFixes.SRAMInitialValue = 0x00;
-
-		// Additional game fixes by sanmaiwashi ...
-		// XXX: unnecessary?
-		if (match_na("SFX \xC5\xB2\xC4\xB6\xDE\xDD\xC0\xDE\xD1\xD3\xC9\xB6\xDE\xC0\xD8 1")) // SD Gundam Gaiden - Knight Gundam Monogatari
-			SNESGameFixes.SRAMInitialValue = 0x6b;
-
-		// others: BS and ST-01x games are 0x00.
-	}
-
-	//// OAM hacks :(
-
-	if (!Settings.DisableGameSpecificHacks)
-	{
-		// OAM hacks because we don't fully understand the behavior of the SNES.
-		// Totally wacky display in 2P mode...
-		// seems to need a disproven behavior, so we're definitely overlooking some other bug?
-		if (match_nn("UNIRACERS")) // Uniracers
-		{
-			SNESGameFixes.Uniracers = TRUE;
-			printf("Applied Uniracers hack.\n");
-		}
-	}
+	// Render Position
+	if (match_na("Sugoro Quest++"))
+		Timings.RenderPos = 128;
+	else if (match_na("FIREPOWER 2000") || match_na("SUPER SWIV"))
+		Timings.RenderPos = 32;
+	else if (match_na("DERBY STALLION 98"))
+		Timings.RenderPos = 128;
+	else if (match_na("AIR STRIKE PATROL") || match_na("DESERT FIGHTER"))
+		Timings.RenderPos = 128; // Just hides shadow
+	else if (match_na("FULL THROTTLE RACING"))
+		Timings.RenderPos = 128;
+	// From bsnes
+	else if (match_na("NHL '94") || match_na("NHL PROHOCKEY'94"))
+		Timings.RenderPos = 32;
+	else if (match_na("ADVENTURES OF FRANKEN") && Settings.PAL)
+		Timings.RenderPos = 32;
 }
 
-// UPS % IPS
+// BPS % UPS % IPS
 
-static uint32 ReadUPSPointer (const uint8 *data, unsigned &addr, unsigned size)
+// number decoding used for both BPS and UPS
+static uint32 XPSdecode (const uint8 *data, uint32 &addr, unsigned size)
 {
 	uint32 offset = 0, shift = 1;
 	while(addr < size) {
@@ -3931,7 +3841,7 @@ static uint32 ReadUPSPointer (const uint8 *data, unsigned &addr, unsigned size)
 //no-header patching errors that result in IPS patches having a 50/50 chance of
 //being applied correctly.
 
-static bool8 ReadUPSPatch (Reader *r, long, int32 &rom_size)
+static bool8 ReadUPSPatch (Stream *r, long, int32 &rom_size)
 {
 	//Reader lacks size() and rewind(), so we need to read in the file to get its size
 	uint8 *data = new uint8[8 * 1024 * 1024];  //allocate a lot of memory, better safe than sorry ...
@@ -3962,10 +3872,10 @@ static bool8 ReadUPSPatch (Reader *r, long, int32 &rom_size)
 	uint32 py_crc32 = (data[size -  8] << 0) + (data[size -  7] << 8) + (data[size -  6] << 16) + (data[size -  5] << 24);
 	uint32 pp_crc32 = (data[size -  4] << 0) + (data[size -  3] << 8) + (data[size -  2] << 16) + (data[size -  1] << 24);
 	if(patch_crc32 != pp_crc32) { delete[] data; return false; }  //patch is corrupted
-	if((rom_crc32 != px_crc32) && (rom_crc32 != py_crc32)) { delete[] data; return false; }  //patch is for a different ROM
+	if(!Settings.IgnorePatchChecksum && (rom_crc32 != px_crc32) && (rom_crc32 != py_crc32)) { delete[] data; return false; }  //patch is for a different ROM
 
-	uint32 px_size = ReadUPSPointer(data, addr, size);
-	uint32 py_size = ReadUPSPointer(data, addr, size);
+	uint32 px_size = XPSdecode(data, addr, size);
+	uint32 py_size = XPSdecode(data, addr, size);
 	uint32 out_size = ((uint32) rom_size == px_size) ? py_size : px_size;
 	if(out_size > CMemory::MAX_ROM_SIZE) { delete[] data; return false; }  //applying this patch will overflow Memory.ROM buffer
 
@@ -3977,7 +3887,7 @@ static bool8 ReadUPSPatch (Reader *r, long, int32 &rom_size)
 
 	uint32 relative = 0;
 	while(addr < size - 12) {
-		relative += ReadUPSPointer(data, addr, size);
+		relative += XPSdecode(data, addr, size);
 		while(addr < size - 12) {
 			uint8 x = data[addr++];
 			Memory.ROM[relative++] ^= x;
@@ -3989,9 +3899,11 @@ static bool8 ReadUPSPatch (Reader *r, long, int32 &rom_size)
 	delete[] data;
 
 	uint32 out_crc32 = caCRC32(Memory.ROM, rom_size);
-	if(((rom_crc32 == px_crc32) && (out_crc32 == py_crc32))
+	if(Settings.IgnorePatchChecksum
+	|| ((rom_crc32 == px_crc32) && (out_crc32 == py_crc32))
 	|| ((rom_crc32 == py_crc32) && (out_crc32 == px_crc32))
 	) {
+		Settings.IsPatched = 3;
 		return true;
 	} else {
 		//technically, reaching here means that patching has failed.
@@ -4009,7 +3921,106 @@ static bool8 ReadUPSPatch (Reader *r, long, int32 &rom_size)
 	}
 }
 
-static long ReadInt (Reader *r, unsigned nbytes)
+// header notes for UPS patches also apply to BPS
+//
+// logic taken from http://byuu.org/programming/bps and the accompanying source
+//
+static bool8 ReadBPSPatch (Stream *r, long, int32 &rom_size)
+{
+	uint8 *data = new uint8[8 * 1024 * 1024];  //allocate a lot of memory, better safe than sorry ...
+	uint32 size = 0;
+	while(true) {
+		int value = r->get_char();
+		if(value == EOF) break;
+		data[size++] = value;
+		if(size >= 8 * 1024 * 1024) {
+			//prevent buffer overflow: SNES-made BPS patches should never be this big anyway ...
+			delete[] data;
+			return false;
+		}
+	}
+
+	/* 4-byte header + 1-byte input size + 1-byte output size + 1-byte metadata size
+	   + 4-byte unpatched CRC32 + 4-byte patched CRC32 + 4-byte patch CRC32 */
+	if(size < 19) { delete[] data; return false; }  //patch is too small
+
+	uint32 addr = 0;
+	if(data[addr++] != 'B') { delete[] data; return false; }  //patch has an invalid header
+	if(data[addr++] != 'P') { delete[] data; return false; }  //...
+	if(data[addr++] != 'S') { delete[] data; return false; }  //...
+	if(data[addr++] != '1') { delete[] data; return false; }  //...
+
+	uint32 patch_crc32 = caCRC32(data, size - 4);  //don't include patch CRC32 itself in CRC32 calculation
+	uint32 rom_crc32 = caCRC32(Memory.ROM, rom_size);
+	uint32 source_crc32 = (data[size - 12] << 0) + (data[size - 11] << 8) + (data[size - 10] << 16) + (data[size -  9] << 24);
+	uint32 target_crc32 = (data[size -  8] << 0) + (data[size -  7] << 8) + (data[size -  6] << 16) + (data[size -  5] << 24);
+	uint32 pp_crc32 = (data[size -  4] << 0) + (data[size -  3] << 8) + (data[size -  2] << 16) + (data[size -  1] << 24);
+	if(patch_crc32 != pp_crc32) { delete[] data; return false; }  //patch is corrupted
+	if(!Settings.IgnorePatchChecksum && rom_crc32 != source_crc32) { delete[] data; return false; }  //patch is for a different ROM
+
+	XPSdecode(data, addr, size);
+	uint32 target_size = XPSdecode(data, addr, size);
+	uint32 metadata_size = XPSdecode(data, addr, size);
+	addr += metadata_size;
+
+	if(target_size > CMemory::MAX_ROM_SIZE) { delete[] data; return false; }  //applying this patch will overflow Memory.ROM buffer
+
+	enum { SourceRead, TargetRead, SourceCopy, TargetCopy };
+	uint32 outputOffset = 0, sourceRelativeOffset = 0, targetRelativeOffset = 0;
+
+	uint8 *patched_rom = new uint8[target_size];
+	memset(patched_rom,0,target_size);
+
+	while(addr < size - 12) {
+		uint32 length = XPSdecode(data, addr, size);
+		uint32 mode = length & 3;
+		length = (length >> 2) + 1;
+
+		switch((int)mode) {
+			case SourceRead:
+				while(length--) {
+					patched_rom[outputOffset] = Memory.ROM[outputOffset];
+					outputOffset++;
+				}
+				break;
+			case TargetRead:
+				while(length--) patched_rom[outputOffset++] = data[addr++];
+				break;
+			case SourceCopy:
+			case TargetCopy:
+				int32 offset = XPSdecode(data, addr, size);
+				bool negative = offset & 1;
+				offset >>= 1;
+				if(negative) offset = -offset;
+
+				if(mode == SourceCopy) {
+					sourceRelativeOffset += offset;
+					while(length--) patched_rom[outputOffset++] = Memory.ROM[sourceRelativeOffset++];
+				} else {
+					targetRelativeOffset += offset;
+					while(length--) patched_rom[outputOffset++] = patched_rom[targetRelativeOffset++];
+				}
+				break;
+		}
+	}
+
+	delete[] data;
+
+	uint32 out_crc32 = caCRC32(patched_rom, target_size);
+	if(Settings.IgnorePatchChecksum || out_crc32 == target_crc32) {
+		memcpy(Memory.ROM, patched_rom, target_size);
+		rom_size = target_size;
+		delete[] patched_rom;
+		Settings.IsPatched = 2;
+		return true;
+	} else {
+		delete[] patched_rom;
+		fprintf(stderr, "WARNING: BPS patching failed.\nROM has not been altered.\n");
+		return false;
+	}
+}
+
+static long ReadInt (Stream *r, unsigned nbytes)
 {
 	long	v = 0;
 
@@ -4024,7 +4035,7 @@ static long ReadInt (Reader *r, unsigned nbytes)
 	return (v);
 }
 
-static bool8 ReadIPSPatch (Reader *r, long offset, int32 &rom_size)
+static bool8 ReadIPSPatch (Stream *r, long offset, int32 &rom_size)
 {
 	const int32	IPS_EOF = 0x00454F46l;
 	int32		ofs;
@@ -4101,14 +4112,15 @@ static bool8 ReadIPSPatch (Reader *r, long offset, int32 &rom_size)
 	if (ofs != -1 && ofs - offset < rom_size)
 		rom_size = ofs - offset;
 
+	Settings.IsPatched = 1;
 	return (1);
 }
 
 #ifdef UNZIP_SUPPORT
-static int unzFindExtension (unzFile &file, const char *ext, bool restart, bool print)
+static int unzFindExtension (unzFile &file, const char *ext, bool restart, bool print, bool allowExact)
 {
 	unz_file_info	info;
-	int				port, l = strlen(ext);
+	int				port, l = strlen(ext), e = allowExact ? 0 : 1;
 
 	if (restart)
 		port = unzGoToFirstFile(file);
@@ -4123,10 +4135,10 @@ static int unzFindExtension (unzFile &file, const char *ext, bool restart, bool 
 		unzGetCurrentFileInfo(file, &info, name, 128, NULL, 0, NULL, 0);
 		len = strlen(name);
 
-		if (len >= l + 1 && name[len - l - 1] == '.' && strcasecmp(name + len - l, ext) == 0 && unzOpenCurrentFile(file) == UNZ_OK)
+		if (len >= l + e && name[len - l - 1] == '.' && strcasecmp(name + len - l, ext) == 0 && unzOpenCurrentFile(file) == UNZ_OK)
 		{
 			if (print)
-				printf("Using IPS or UPS patch %s", name);
+				printf("Using patch %s", name);
 
 			return (port);
 		}
@@ -4140,32 +4152,44 @@ static int unzFindExtension (unzFile &file, const char *ext, bool restart, bool 
 
 void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &rom_size)
 {
+	Settings.IsPatched = false;
+
 	if (Settings.NoPatch)
 		return;
 
-#if defined(GEKKO)||defined(XENON)
+#ifdef SNES9XGX
 	int patchtype;
-	char patchpath[2][512];
-	STREAM patchfile = NULL;
+	char patchpath[3][512];
+	FSTREAM patchfile = NULL;
 	long offset = header ? 512 : 0;
 
-	sprintf(patchpath[0], "%s%s.ips", browser.dir, Memory.ROMFilename);
-	sprintf(patchpath[1], "%s%s.ups", browser.dir, Memory.ROMFilename);
+	sprintf(patchpath[0], "%s%s.bps", browser.dir, Memory.ROMFilename);
+	sprintf(patchpath[1], "%s%s.ips", browser.dir, Memory.ROMFilename);
+	sprintf(patchpath[2], "%s%s.ups", browser.dir, Memory.ROMFilename);
 
-	for(patchtype=0; patchtype<2; patchtype++)
+	for(patchtype=0; patchtype<3; patchtype++)
 	{
-		if ((patchfile = OPEN_STREAM(patchpath[patchtype], "rb")) != NULL)
+		if ((patchfile = OPEN_FSTREAM(patchpath[patchtype], "rb")) != NULL)
 		{
-			if(patchtype == 0)
-				ReadIPSPatch(new fReader(patchfile), offset, rom_size);
-			else
-				ReadUPSPatch(new fReader(patchfile), 0, rom_size);
-			CLOSE_STREAM(patchfile);
+			switch(patchtype) {
+				case 0:
+					ReadBPSPatch(new fStream(patchfile), offset, rom_size);
+					break;
+				case 1:
+					ReadIPSPatch(new fStream(patchfile), offset, rom_size);
+					break;
+				case 2:
+					ReadUPSPatch(new fStream(patchfile), 0, rom_size);
+					break;
+				default:
+					break;
+			}
+			CLOSE_FSTREAM(patchfile);
 			break;
 		}
 	}
 #else
-	STREAM		patch_file  = NULL;
+	FSTREAM		patch_file  = NULL;
 	uint32		i;
 	long		offset = header ? 512 : 0;
 	int			ret;
@@ -4173,17 +4197,83 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 	char		dir[_MAX_DIR + 1], drive[_MAX_DRIVE + 1], name[_MAX_FNAME + 1], ext[_MAX_EXT + 1], ips[_MAX_EXT + 3], fname[PATH_MAX + 1];
 	const char	*n;
 
+	_splitpath(rom_filename, drive, dir, name, ext);
+
+	// BPS
+	_makepath(fname, drive, dir, name, "bps");
+
+	if ((patch_file = OPEN_FSTREAM(fname, "rb")) != NULL)
+	{
+		printf("Using BPS patch %s", fname);
+
+        Stream *s = new fStream(patch_file);
+		ret = ReadBPSPatch(s, 0, rom_size);
+        s->closeStream();
+
+		if (ret)
+		{
+			printf("!\n");
+			return;
+		}
+		else
+			printf(" failed!\n");
+	}
+
+#ifdef UNZIP_SUPPORT
+	if (!strcasecmp(ext, "zip") || !strcasecmp(ext, ".zip"))
+	{
+		unzFile	file = unzOpen(rom_filename);
+		if (file)
+		{
+			int	port = unzFindExtension(file, "bps");
+			if (port == UNZ_OK)
+			{
+				printf(" in %s", rom_filename);
+
+                Stream *s = new unzStream(file);
+				ret = ReadBPSPatch(s, offset, rom_size);
+				delete s;
+
+				if (ret)
+					printf("!\n");
+				else
+					printf(" failed!\n");
+			}
+			assert(unzClose(file) == UNZ_OK);
+		}
+	}
+#endif
+
+	n = S9xGetFilename(".bps", PATCH_DIR);
+
+	if ((patch_file = OPEN_FSTREAM(n, "rb")) != NULL)
+	{
+		printf("Using BPS patch %s", n);
+
+        Stream *s = new fStream(patch_file);
+		ret = ReadBPSPatch(s, 0, rom_size);
+        s->closeStream();
+
+		if (ret)
+		{
+			printf("!\n");
+			return;
+		}
+		else
+			printf(" failed!\n");
+	}
+
 	// UPS
 
-	_splitpath(rom_filename, drive, dir, name, ext);
 	_makepath(fname, drive, dir, name, "ups");
 
-	if ((patch_file = OPEN_STREAM(fname, "rb")) != NULL)
+	if ((patch_file = OPEN_FSTREAM(fname, "rb")) != NULL)
 	{
 		printf("Using UPS patch %s", fname);
 
-		ret = ReadUPSPatch(new fReader(patch_file), 0, rom_size);
-		CLOSE_STREAM(patch_file);
+        Stream *s = new fStream(patch_file);
+		ret = ReadUPSPatch(s, 0, rom_size);
+        s->closeStream();
 
 		if (ret)
 		{
@@ -4205,26 +4295,29 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 			{
 				printf(" in %s", rom_filename);
 
-				ret = ReadUPSPatch(new unzReader(file), offset, rom_size);
-				unzCloseCurrentFile(file);
+                Stream *s = new unzStream(file);
+				ret = ReadUPSPatch(s, offset, rom_size);
+				delete s;
 
 				if (ret)
 					printf("!\n");
 				else
 					printf(" failed!\n");
 			}
+			assert(unzClose(file) == UNZ_OK);
 		}
 	}
 #endif
 
-	n = S9xGetFilename(".ups", IPS_DIR);
+	n = S9xGetFilename(".ups", PATCH_DIR);
 
-	if ((patch_file = OPEN_STREAM(n, "rb")) != NULL)
+	if ((patch_file = OPEN_FSTREAM(n, "rb")) != NULL)
 	{
 		printf("Using UPS patch %s", n);
 
-		ret = ReadUPSPatch(new fReader(patch_file), 0, rom_size);
-		CLOSE_STREAM(patch_file);
+        Stream *s = new fStream(patch_file);
+		ret = ReadUPSPatch(s, 0, rom_size);
+        s->closeStream();
 
 		if (ret)
 		{
@@ -4237,15 +4330,15 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 
 	// IPS
 
-	_splitpath(rom_filename, drive, dir, name, ext);
 	_makepath(fname, drive, dir, name, "ips");
 
-	if ((patch_file = OPEN_STREAM(fname, "rb")) != NULL)
+	if ((patch_file = OPEN_FSTREAM(fname, "rb")) != NULL)
 	{
 		printf("Using IPS patch %s", fname);
 
-		ret = ReadIPSPatch(new fReader(patch_file), offset, rom_size);
-		CLOSE_STREAM(patch_file);
+        Stream *s = new fStream(patch_file);
+		ret = ReadIPSPatch(s, offset, rom_size);
+        s->closeStream();
 
 		if (ret)
 		{
@@ -4266,13 +4359,14 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 			snprintf(ips, 8, "%03d.ips", i);
 			_makepath(fname, drive, dir, name, ips);
 
-			if (!(patch_file = OPEN_STREAM(fname, "rb")))
+			if (!(patch_file = OPEN_FSTREAM(fname, "rb")))
 				break;
 
 			printf("Using IPS patch %s", fname);
 
-			ret = ReadIPSPatch(new fReader(patch_file), offset, rom_size);
-			CLOSE_STREAM(patch_file);
+            Stream *s = new fStream(patch_file);
+			ret = ReadIPSPatch(s, offset, rom_size);
+            s->closeStream();
 
 			if (ret)
 			{
@@ -4302,13 +4396,14 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 				break;
 			_makepath(fname, drive, dir, name, ips);
 
-			if (!(patch_file = OPEN_STREAM(fname, "rb")))
+			if (!(patch_file = OPEN_FSTREAM(fname, "rb")))
 				break;
 
 			printf("Using IPS patch %s", fname);
 
-			ret = ReadIPSPatch(new fReader(patch_file), offset, rom_size);
-			CLOSE_STREAM(patch_file);
+            Stream *s = new fStream(patch_file);
+			ret = ReadIPSPatch(s, offset, rom_size);
+            s->closeStream();
 
 			if (ret)
 			{
@@ -4336,13 +4431,14 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 			snprintf(ips, 4, "ip%d", i);
 			_makepath(fname, drive, dir, name, ips);
 
-			if (!(patch_file = OPEN_STREAM(fname, "rb")))
+			if (!(patch_file = OPEN_FSTREAM(fname, "rb")))
 				break;
 
 			printf("Using IPS patch %s", fname);
 
-			ret = ReadIPSPatch(new fReader(patch_file), offset, rom_size);
-			CLOSE_STREAM(patch_file);
+            Stream *s = new fStream(patch_file);
+			ret = ReadIPSPatch(s, offset, rom_size);
+            s->closeStream();
 
 			if (ret)
 			{
@@ -4371,8 +4467,9 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 			{
 				printf(" in %s", rom_filename);
 
-				ret = ReadIPSPatch(new unzReader(file), offset, rom_size);
-				unzCloseCurrentFile(file);
+                Stream *s = new unzStream(file);
+				ret = ReadIPSPatch(s, offset, rom_size);
+				delete s;
 
 				if (ret)
 				{
@@ -4398,8 +4495,9 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 
 					printf(" in %s", rom_filename);
 
-					ret = ReadIPSPatch(new unzReader(file), offset, rom_size);
-					unzCloseCurrentFile(file);
+                    Stream *s = new unzStream(file);
+					ret = ReadIPSPatch(s, offset, rom_size);
+					delete s;
 
 					if (ret)
 					{
@@ -4432,8 +4530,9 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 
 					printf(" in %s", rom_filename);
 
-					ret = ReadIPSPatch(new unzReader(file), offset, rom_size);
-					unzCloseCurrentFile(file);
+                    Stream *s = new unzStream(file);
+					ret = ReadIPSPatch(s, offset, rom_size);
+					delete s;
 
 					if (ret)
 					{
@@ -4464,8 +4563,9 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 
 					printf(" in %s", rom_filename);
 
-					ret = ReadIPSPatch(new unzReader(file), offset, rom_size);
-					unzCloseCurrentFile(file);
+                    Stream *s = new unzStream(file);
+					ret = ReadIPSPatch(s, offset, rom_size);
+					delete s;
 
 					if (ret)
 					{
@@ -4491,14 +4591,15 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 	}
 #endif
 
-	n = S9xGetFilename(".ips", IPS_DIR);
+	n = S9xGetFilename(".ips", PATCH_DIR);
 
-	if ((patch_file = OPEN_STREAM(n, "rb")) != NULL)
+	if ((patch_file = OPEN_FSTREAM(n, "rb")) != NULL)
 	{
 		printf("Using IPS patch %s", n);
 
-		ret = ReadIPSPatch(new fReader(patch_file), offset, rom_size);
-		CLOSE_STREAM(patch_file);
+        Stream *s = new fStream(patch_file);
+		ret = ReadIPSPatch(s, offset, rom_size);
+        s->closeStream();
 
 		if (ret)
 		{
@@ -4517,15 +4618,16 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 		do
 		{
 			snprintf(ips, 9, ".%03d.ips", i);
-			n = S9xGetFilename(ips, IPS_DIR);
+			n = S9xGetFilename(ips, PATCH_DIR);
 
-			if (!(patch_file = OPEN_STREAM(n, "rb")))
+			if (!(patch_file = OPEN_FSTREAM(n, "rb")))
 				break;
 
 			printf("Using IPS patch %s", n);
 
-			ret = ReadIPSPatch(new fReader(patch_file), offset, rom_size);
-			CLOSE_STREAM(patch_file);
+            Stream *s = new fStream(patch_file);
+			ret = ReadIPSPatch(s, offset, rom_size);
+            s->closeStream();
 
 			if (ret)
 			{
@@ -4553,15 +4655,16 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 			snprintf(ips, _MAX_EXT + 3, ".ips%d", i);
 			if (strlen(ips) > _MAX_EXT + 1)
 				break;
-			n = S9xGetFilename(ips, IPS_DIR);
+			n = S9xGetFilename(ips, PATCH_DIR);
 
-			if (!(patch_file = OPEN_STREAM(n, "rb")))
+			if (!(patch_file = OPEN_FSTREAM(n, "rb")))
 				break;
 
 			printf("Using IPS patch %s", n);
 
-			ret = ReadIPSPatch(new fReader(patch_file), offset, rom_size);
-			CLOSE_STREAM(patch_file);
+            Stream *s = new fStream(patch_file);
+			ret = ReadIPSPatch(s, offset, rom_size);
+            s->closeStream();
 
 			if (ret)
 			{
@@ -4587,15 +4690,16 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 		do
 		{
 			snprintf(ips, 5, ".ip%d", i);
-			n = S9xGetFilename(ips, IPS_DIR);
+			n = S9xGetFilename(ips, PATCH_DIR);
 
-			if (!(patch_file = OPEN_STREAM(n, "rb")))
+			if (!(patch_file = OPEN_FSTREAM(n, "rb")))
 				break;
 
 			printf("Using IPS patch %s", n);
 
-			ret = ReadIPSPatch(new fReader(patch_file), offset, rom_size);
-			CLOSE_STREAM(patch_file);
+            Stream *s = new fStream(patch_file);
+			ret = ReadIPSPatch(s, offset, rom_size);
+            s->closeStream();
 
 			if (ret)
 			{
@@ -4612,5 +4716,25 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 		if (flag)
 			return;
 	}
+
+#ifdef UNZIP_SUPPORT
+	// Mercurial Magic (MSU-1 distribution pack)
+	if (strcasecmp(ext, "msu1") && strcasecmp(ext, ".msu1"))	// ROM was *NOT* loaded from a .msu1 pack
+	{
+		Stream *s = S9xMSU1OpenFile("patch.bps", TRUE);
+		if (s)
+		{
+			printf("Using BPS patch %s.msu1", name);
+			ret = ReadBPSPatch(s, offset, rom_size);
+			s->closeStream();
+
+			if (ret)
+				printf("!\n");
+			else
+				printf(" failed!\n");
+		}
+	}
+#endif
+
 #endif
 }

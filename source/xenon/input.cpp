@@ -888,8 +888,18 @@ bool MenuRequested() {
  * Called on each rendered frame
  * Our way of putting controller input into Snes9x
  ***************************************************************************/
+static bool buttonsReported = false;
+
+void ClearButtonsReported() {
+        buttonsReported = false;
+}
+
 void ReportButtons() {
         int i, j;
+
+        if (buttonsReported)
+                return;
+        buttonsReported = true;
 
         UpdatePads();
 

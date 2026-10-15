@@ -32,11 +32,11 @@ CFLAGS	=	-g -O3 -Wall $(MACHDEP) $(INCLUDE)  -DNO_SOUND \
 			-DZLIB -DRIGHTSHIFT_IS_SAR -DCPU_SHUTDOWN -DCORRECT_VRAM_READS \
 			-D_SZ_ONE_DIRECTORY -D_LZMA_IN_CB -D_LZMA_OUT_READ \
 			-fomit-frame-pointer \
-			-DXENON -U__linux \
+			-DXENON -DSNES9XGX -U__linux \
 			-Wno-unused-parameter -Wno-strict-aliasing \
 			-Wno-write-strings -Wno-parentheses 
 
-CXXFLAGS	=	$(CFLAGS) -fpermissive
+CXXFLAGS	=	$(CFLAGS) -fpermissive -std=gnu++11
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
