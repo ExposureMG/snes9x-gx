@@ -9,101 +9,92 @@
  * Audio driver
  * Audio is fixed to 32Khz/16bit/Stereo
  ***************************************************************************/
-
-#include <gccore.h>
-#include <ogcsys.h>
+#include <xetypes.h>
+#include <xenon_sound/sound.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <asndlib.h>
 
-#include "video.h"
+#include "../snes9x/snes9x.h"
+#include "../snes9x/memmap.h"
+#include "../snes9x/cpuexec.h"
+#include "../snes9x/ppu.h"
+#include "../snes9x/apu/apu.h"
+#include "../snes9x/display.h"
+#include "../snes9x/gfx.h"
+#include "../snes9x/spc7110.h"
+#include "../snes9x/controls.h"
+#include "snes9xgx.h"
 
-#include "snes9x/snes9x.h"
-#include "snes9x/memmap.h"
-#include "snes9x/cpuexec.h"
-#include "snes9x/ppu.h"
-#include "snes9x/apu/apu.h"
-#include "snes9x/display.h"
-#include "snes9x/gfx.h"
-#include "snes9x/spc7110.h"
-#include "snes9x/controls.h"
+#include <xenon_soc/xenon_power.h>
+#include <ppc/atomic.h>
 
-extern int ConfigRequested;
+static uint8_t xenon_thread_stack[6 * 0x10000];
+static uint32_t __attribute__((aligned(128))) audio_lock = 0;
+static uint32_t have_sound = 0;
 
-/*** Double buffered audio ***/
-#define AUDIOBUFFER 2048
-static unsigned char soundbuffer[2][AUDIOBUFFER] __attribute__ ((__aligned__ (32)));
-static int whichab = 0;	/*** Audio buffer flip switch ***/
+uint8_t buffer[65536];
+int samples_guard = 2048;
+int req_samples = 512;
 
-#define AUDIOSTACK 16384
-static lwpq_t audioqueue;
-static lwp_t athread;
-static uint8 astack[AUDIOSTACK];
-static mutex_t audiomutex = LWP_MUTEX_NULL;
+static void audio_thread() {
+	while (exitThreads == 0) {
+		int sample_rate = 48000 * 2;
+		int samples_per_frame = Settings.PAL ? sample_rate / 50 : sample_rate / 60;
+		int samples_guard = 16384;
+		int req_samples = samples_per_frame;
 
-/****************************************************************************
- * Audio Threading
- ***************************************************************************/
-static void *
-AudioThread (void *arg)
-{
-	LWP_InitQueue (&audioqueue);
+		if (xenon_sound_get_unplayed() < samples_guard) {
+			
+			lock(&audio_lock);
+			S9xMixSamples(buffer, req_samples);
+			unlock(&audio_lock);
 
-	while (1)
-	{
-		if (ConfigRequested)
-			memset (soundbuffer[whichab], 0, AUDIOBUFFER);
-		else
-		{
-			LWP_MutexLock(audiomutex);
-			S9xMixSamples (soundbuffer[whichab], AUDIOBUFFER >> 1);
-			LWP_MutexUnlock(audiomutex);
+			for (int i = 0; i < req_samples * 2; i += 4)
+				*(int*) (buffer + i) = __builtin_bswap32(*(int*) (buffer + i));
+
+			xenon_sound_submit(buffer, req_samples * 2);
 		}
-		DCFlushRange (soundbuffer[whichab], AUDIOBUFFER);
-		LWP_ThreadSleep (audioqueue);
-	}
-
-	return NULL;
-}
-
-/****************************************************************************
- * MixSamples
- * This continually calls S9xMixSamples On each DMA Completion
- ***************************************************************************/
-static void
-GCMixSamples ()
-{
-	if (!ConfigRequested)
-	{
-		whichab ^= 1;
-		AUDIO_InitDMA ((u32) soundbuffer[whichab], AUDIOBUFFER);
-		LWP_ThreadSignal (audioqueue);
+		
 	}
 }
 
-static void FinalizeSamplesCallback (void *data)
-{ 
-	LWP_MutexLock(audiomutex);
+void handle_sound(void *) {
+	//	lock(&audio_lock);
+	//	have_sound = 1;
+	//	unlock(&audio_lock);
+
+	//S9xFinalizeSamples();
 	S9xFinalizeSamples();
-	LWP_MutexUnlock(audiomutex);
+
+	/* this all isn't that great... */
+	//	int sample_rate = 48000*2;
+	//	int samples_per_frame = Settings.PAL ? sample_rate / 50 : sample_rate / 60;
+
+	if (xenon_sound_get_unplayed() < samples_guard) {
+		S9xMixSamples(buffer, req_samples);
+
+		for (int i = 0; i < req_samples * 2; i += 4)
+			*(int*) (buffer + i) = __builtin_bswap32(*(int*) (buffer + i));
+
+		xenon_sound_submit(buffer, req_samples * 2);
+	}
+}
+
+static void FinalizeSamplesCallback(void *data) {
+	lock(&audio_lock);
+	S9xFinalizeSamples();
+	unlock(&audio_lock);
 }
 
 /****************************************************************************
  * InitAudio
  ***************************************************************************/
-void
-InitAudio ()
-{
-	#ifdef NO_SOUND
-	AUDIO_Init (NULL);
-	AUDIO_SetDSPSampleRate(AI_SAMPLERATE_32KHZ);
-	AUDIO_RegisterDMACallback(GCMixSamples);
-	#else
-	ASND_Init();
-	#endif
-	LWP_MutexInit(&audiomutex, false);
-	LWP_CreateThread (&athread, AudioThread, NULL, astack, AUDIOSTACK, 70);
+void InitAudio() {
+	xenon_sound_init();
+	xenon_run_thread_task(4, xenon_thread_stack + (4 * 0x10000) - 0x100, audio_thread);
+	//S9xSetSamplesAvailableCallback(handle_sound, NULL);
+	S9xSetSamplesAvailableCallback(FinalizeSamplesCallback, NULL);
 }
 
 /****************************************************************************
@@ -111,36 +102,7 @@ InitAudio ()
  *
  * Switches between menu sound and emulator sound
  ***************************************************************************/
-void
-SwitchAudioMode(int mode)
-{
-	if(mode == 0) // emulator
-	{
-		#ifndef NO_SOUND
-		ASND_Pause(1);
-		AUDIO_StopDMA();
-		AUDIO_SetDSPSampleRate(AI_SAMPLERATE_32KHZ);
-		AUDIO_RegisterDMACallback(GCMixSamples);
-		#endif
-		memset(soundbuffer[0],0,AUDIOBUFFER);
-		memset(soundbuffer[1],0,AUDIOBUFFER);
-		DCFlushRange(soundbuffer[0],AUDIOBUFFER);
-		DCFlushRange(soundbuffer[1],AUDIOBUFFER);
-		AUDIO_InitDMA((u32)soundbuffer[whichab],AUDIOBUFFER);
-		AUDIO_StartDMA();
-
-		S9xSetSamplesAvailableCallback(FinalizeSamplesCallback, NULL);
-	}
-	else // menu
-	{
-		S9xSetSamplesAvailableCallback(NULL, NULL);
-		#ifndef NO_SOUND
-		ASND_Init();
-		ASND_Pause(0);
-		#else
-		AUDIO_StopDMA();
-		#endif
-	}
+void SwitchAudioMode(int mode) {
 }
 
 /****************************************************************************
@@ -149,9 +111,7 @@ SwitchAudioMode(int mode)
  * Shuts down audio subsystem. Useful to avoid unpleasant sounds if a
  * crash occurs during shutdown.
  ***************************************************************************/
-void ShutdownAudio()
-{
-	AUDIO_StopDMA();
+void ShutdownAudio() {
 }
 
 /****************************************************************************
@@ -159,8 +119,5 @@ void ShutdownAudio()
  *
  * Called to kick off the Audio Queue
  ***************************************************************************/
-void
-AudioStart ()
-{
-	GCMixSamples ();
+void AudioStart() {
 }

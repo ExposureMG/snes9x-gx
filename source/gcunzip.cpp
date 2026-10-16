@@ -10,7 +10,7 @@
  * File unzip routines
  ***************************************************************************/
 
-#include <gccore.h>
+#include <xetypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,9 +23,9 @@
 #include "gcunzip.h"
 
 extern "C" {
-#include "utils/sz/7zCrc.h"
-#include "utils/sz/7zIn.h"
-#include "utils/sz/7zExtract.h"
+#include "../utils/sz/7zCrc.h"
+#include "../utils/sz/7zIn.h"
+#include "../utils/sz/7zExtract.h"
 }
 
 #define ZIPCHUNK 2048

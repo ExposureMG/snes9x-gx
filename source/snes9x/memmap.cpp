@@ -41,7 +41,7 @@
 #include "snapshot.h"
 
 #ifdef SNES9XGX
-#include "../xenon/filebrowser.h"
+#include "../filebrowser.h"
 extern int WiiFileLoader();
 extern void WiiSetupCheats();
 #endif
@@ -4163,9 +4163,9 @@ void CMemory::CheckForAnyPatch (const char *rom_filename, bool8 header, int32 &r
 	FSTREAM patchfile = NULL;
 	long offset = header ? 512 : 0;
 
-	sprintf(patchpath[0], "%s%s.bps", browser.dir, Memory.ROMFilename);
-	sprintf(patchpath[1], "%s%s.ips", browser.dir, Memory.ROMFilename);
-	sprintf(patchpath[2], "%s%s.ups", browser.dir, Memory.ROMFilename);
+	//sprintf(patchpath[0], "%s%s.bps", browser.dir, Memory.ROMFilename);
+	//sprintf(patchpath[1], "%s%s.ips", browser.dir, Memory.ROMFilename);
+	//sprintf(patchpath[2], "%s%s.ups", browser.dir, Memory.ROMFilename);
 
 	for(patchtype=0; patchtype<3; patchtype++)
 	{

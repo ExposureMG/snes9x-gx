@@ -10,15 +10,14 @@
 #ifndef _FILTER_H_
 #define _FILTER_H_
 
-#include <gccore.h>
-#include <ogcsys.h>
+#include <xetypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 
-#include "snes9x/snes9x.h"
+#include "../snes9x/snes9x.h"
  
 enum RenderFilter{
 	FILTER_NONE = 0,
@@ -50,13 +49,13 @@ extern unsigned char * filtermem;
 //
 void SelectFilterMethod ();
 void RenderPlain (uint8 *srcPtr, uint32 srcPitch, uint8 *dstPtr, uint32 dstPitch, int width, int height);
-void SelectFilterMethod ();
 TFilterMethod FilterToMethod (RenderFilter filterID);
-const char* GetFilterName (RenderFilter filterID);
+const char* GetFilterName (int filterID);
 bool GetFilterHiResSupport (RenderFilter filterID);
 int GetFilterScale(RenderFilter filterID);
 template<int GuiScale> void RenderHQ2X (uint8 *srcPtr, uint32 srcPitch, uint8 *dstPtr, uint32 dstPitch, int width, int height);
 void InitLUTs();
+int GetFilterNumber();
 
 #endif
 

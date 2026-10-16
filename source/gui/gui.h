@@ -26,12 +26,12 @@
  * authors of PNGU and FreeTypeGX, of which this library makes use. Thanks
  * also to the authors of GRRLIB and libwiisprite for laying the foundations.
  *
-*/
+ */
 
 #ifndef LIBWIIGUI_H
 #define LIBWIIGUI_H
 
-#include <gccore.h>
+//#include <gccore.h>
 #include <malloc.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,25 +39,27 @@
 #include <exception>
 #include <wchar.h>
 #include <math.h>
-#include <asndlib.h>
-#include <wiiuse/wpad.h>
-
+#include <time.h>
+#include <time/time.h>
+//#include <asndlib.h>
+//#include <wiiuse/wpad.h>
 #include "snes9xgx.h"
+#include "pngu.h"
+#include "FreeTypeGX.h"
 #include "video.h"
 #include "filelist.h"
-#include "fileop.h"
 #include "input.h"
-#include "../utils/pngu.h"
-#include "../utils/FreeTypeGX.h"
-#include "../utils/oggplayer.h"
+#include "oggplayer.h"
+
+#include <xenos/xe.h>
 
 extern FreeTypeGX *fontSystem[];
 
 #define SCROLL_DELAY_INITIAL	200000
 #define SCROLL_DELAY_LOOP		30000
 #define SCROLL_DELAY_DECREASE	300
-#define FILE_PAGESIZE 			10
-#define PAGESIZE 				8
+#define FILE_PAGESIZE 			16
+#define PAGESIZE 				16
 #define SAVELISTSIZE 			6
 #define MAX_SAVES 				100
 #define MAX_OPTIONS 			150
@@ -549,7 +551,7 @@ class GuiImageData
 		~GuiImageData();
 		//!Gets a pointer to the image data
 		//!\return pointer to image data
-		u8 * GetImage();
+		XenosSurface * GetImage();
 		//!Gets the image width
 		//!\return image width
 		int GetWidth();
@@ -557,7 +559,7 @@ class GuiImageData
 		//!\return image height
 		int GetHeight();
 	protected:
-		u8 * data; //!< Image data
+		XenosSurface * data; //!< Image data
 		int height; //!< Height of image
 		int width; //!< Width of image
 };
@@ -571,6 +573,7 @@ class GuiImage : public GuiElement
 		//!\overload
 		//!\param img Pointer to GuiImageData element
 		GuiImage(GuiImageData * img);
+		GuiImage(struct XenosSurface * img, int w, int h);
 		//!\overload
 		//!Sets up a new image from the image data specified
 		//!\param img
@@ -595,10 +598,11 @@ class GuiImage : public GuiElement
 		void Draw();
 		//!Gets the image data
 		//!\return pointer to image data
-		u8 * GetImage();
+		XenosSurface * GetImage();
 		//!Sets up a new image using the GuiImageData object specified
 		//!\param img Pointer to GuiImageData object
 		void SetImage(GuiImageData * img);
+		void SetImage(struct XenosSurface * img);
 		//!\overload
 		//!\param img Pointer to image data
 		//!\param w Width
@@ -623,7 +627,7 @@ class GuiImage : public GuiElement
 		void SetStripe(int s);
 	protected:
 		int imgType; //!< Type of image data (IMAGE_TEXTURE, IMAGE_COLOR, IMAGE_DATA)
-		u8 * image; //!< Poiner to image data. May be shared with GuiImageData data
+		XenosSurface * image; //!< Poiner to image data. May be shared with GuiImageData data
 		f32 imageangle; //!< Angle to draw the image
 		int tile; //!< Number of times to draw (tile) the image horizontally
 		int stripe; //!< Alpha value (0-255) to apply a stripe effect to the texture
@@ -1049,5 +1053,6 @@ class GuiFileBrowser : public GuiElement
 		int numEntries;
 		bool listChanged;
 };
+
 
 #endif

@@ -5,5 +5,4 @@ nbproject
 .svn
 *.elf*
 *~
-build_xenon
-
+build_*

@@ -14,11 +14,10 @@
 #ifndef _FILEOP_H_
 #define _FILEOP_H_
 
-#include <gccore.h>
+#include <xetypes.h>
 #include <stdio.h>
 #include <string.h>
-#include <ogcsys.h>
-#include <fat.h>
+#include <libfat/fat.h>
 #include <unistd.h>
 
 #define SAVEBUFFERSIZE (1024 * 512)

@@ -14,7 +14,7 @@
 #ifndef _SNES9XGX_H_
 #define _SNES9XGX_H_
 
-#include "utils/FreeTypeGX.h"
+#include "FreeTypeGX.h"
 #include "snes9x.h"
 #include "filter.h"
 #include "filelist.h"
@@ -28,16 +28,15 @@
 #define SILENT 1
 
 const char pathPrefix[9][8] =
-{ "", "sd:/", "usb:/", "dvd:/", "smb:/", "carda:/", "cardb:/" };
+//{ "", "sd:/", "usb:/", "dvd:/", "smb:/", "carda:/", "cardb:/" };
+{ "", "uda:/", "sda0:/", "dvd:/", "smb:/", };
 
 enum {
 	DEVICE_AUTO,
-	DEVICE_SD,
 	DEVICE_USB,
+        DEVICE_HDD,
 	DEVICE_DVD,
 	DEVICE_SMB,
-	DEVICE_SD_SLOTA,
-	DEVICE_SD_SLOTB
 };
 
 enum {
@@ -84,9 +83,9 @@ struct SGCSettings{
     int		AutoSave;
     int		LoadMethod; // For ROMS: Auto, SD, DVD, USB, Network (SMB)
 	int		SaveMethod; // For SRAM, Freeze, Prefs: Auto, SD, USB, SMB
-	char	LoadFolder[MAXPATHLEN]; // Path to game files
-	char	SaveFolder[MAXPATHLEN]; // Path to save files
-	char	CheatFolder[MAXPATHLEN]; // Path to cheat files
+	char	LoadFolder[250]; // Path to game files
+	char	SaveFolder[250]; // Path to save files
+	char	CheatFolder[250]; // Path to cheat files
 
 	char	smbip[80];
 	char	smbuser[20];
@@ -116,6 +115,9 @@ void ShutdownWii();
 bool SupportedIOS(u32 ios);
 bool SaneIOS(u32 ios);
 extern struct SGCSettings GCSettings;
+
+/* snes9x core (SNES9XGX build) reads EmuSettings.crosshair */
+#define EmuSettings GCSettings
 extern int ScreenshotRequested;
 extern int ConfigRequested;
 extern int ShutdownRequested;
@@ -124,4 +126,5 @@ extern char appPath[];
 extern char loadedFile[];
 extern FreeTypeGX *fontSystem[];
 
+extern int exitThreads;
 #endif

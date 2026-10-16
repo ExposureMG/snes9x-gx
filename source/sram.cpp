@@ -10,19 +10,18 @@
  * SRAM save/load/import/export handling
  ***************************************************************************/
 
-#include <gccore.h>
+#include <xetypes.h>
 #include <stdio.h>
 #include <string.h>
-#include <ogcsys.h>
 
 #include "snes9xgx.h"
 #include "menu.h"
 #include "fileop.h"
 #include "filebrowser.h"
 #include "input.h"
-#include "snes9x/snes9x.h"
-#include "snes9x/memmap.h"
-#include "snes9x/srtc.h"
+#include "../snes9x/snes9x.h"
+#include "../snes9x/memmap.h"
+#include "../snes9x/srtc.h"
 
 /****************************************************************************
  * Load SRAM
@@ -76,7 +75,7 @@ LoadSRAM (char * filepath, bool silent)
 bool
 LoadSRAMAuto (bool silent)
 {
-	char filepath[MAXPATHLEN];
+	char filepath[250];
 
 	// look for Auto save file
 	if(!MakeFilePath(filepath, FILE_SRAM, Memory.ROMFilename, 0))

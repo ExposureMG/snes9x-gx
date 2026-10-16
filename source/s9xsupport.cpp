@@ -11,22 +11,25 @@
  * Snes9x support functions
  ***************************************************************************/
 
-#include <gccore.h>
-#include <ogcsys.h>
+#include "../snes9x/snes9x.h"
+#include "../snes9x/memmap.h"
+#include "../snes9x/display.h"
+#include "../snes9x/apu/apu.h"
+#include "../snes9x/controls.h"
+
+#include <xetypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <ogc/lwp_watchdog.h>
+#include <ppc/timebase.h>
+#include <time/time.h>
 
 #include "snes9xgx.h"
 #include "video.h"
 #include "audio.h"
-#include "snes9x/snes9x.h"
-#include "snes9x/memmap.h"
-#include "snes9x/display.h"
-#include "snes9x/apu/apu.h"
-#include "snes9x/controls.h"
+
+#define gettime mftb
 
 #define MAX_MESSAGE_LEN (36 * 3)
 
@@ -85,6 +88,7 @@ void S9xInitSync()
 
 void S9xSyncSpeed ()
 {
+#if 0
 	unsigned int timediffallowed = Settings.TurboMode ? 0 : Settings.FrameTime;
 
 	while (!S9xSyncSound())
@@ -97,7 +101,7 @@ void S9xSyncSpeed ()
 
 	now = gettime();
 
-	if (diff_usec(prev, now) > timediffallowed)
+	if (tb_diff_usec(now,prev) > timediffallowed)
 	{
 		/* Timer has already expired */
 		if (IPPU.SkippedFrames < skipFrms)
@@ -114,7 +118,7 @@ void S9xSyncSpeed ()
 	else
 	{
 		/*** Ahead - so hold up ***/
-		while (diff_usec(prev, now) < timediffallowed)
+		while (tb_diff_usec(now,prev) < timediffallowed)
 		{
 			now = gettime();
 			usleep(50);
@@ -124,7 +128,7 @@ void S9xSyncSpeed ()
 	}
 
 	prev = now;
-
+#endif
 	return;
 }
 
@@ -230,12 +234,6 @@ void _makepath(char *filename, const char *drive, const char *dir,
 }
 
 int dup(int fildes)
-{
-	ExitApp();
-	return 1;
-}
-
-int access(const char *pathname, int mode)
 {
 	ExitApp();
 	return 1;

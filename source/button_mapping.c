@@ -9,16 +9,16 @@
  * Controller button mapping
  ***************************************************************************/
 
-#include <gccore.h>
+#include <xetypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ogcsys.h>
 #include <unistd.h>
-#include <wiiuse/wpad.h>
+#include <input/input.h>
+#include "w_input.h"
 
 #include "button_mapping.h"
-
+#if 1
 /****************************************************************************
  * Controller Button Descriptions:
  * used for identifying which buttons have been pressed when configuring
@@ -115,3 +115,4 @@ CtrlrMap ctrlr_def[4] = {
 	}
 }
 };
+#endif

@@ -11,14 +11,18 @@
  *
  * Generic file routines - reading, writing, browsing
  ***************************************************************************/
+#include "../snes9x/snes9x.h"
+#include "../snes9x/memmap.h"
+#include "../snes9x/cheats.h"
 
-#include <gccore.h>
+#include <xetypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <wiiuse/wpad.h>
-#include <sys/dir.h>
+#include "w_input.h"
 #include <malloc.h>
+
+#include <debug.h>
 
 #ifdef HW_RVL
 #include <di/di.h>
@@ -28,21 +32,17 @@
 #include "filebrowser.h"
 #include "menu.h"
 #include "video.h"
-#include "networkop.h"
+//#include "networkop.h"
 #include "fileop.h"
 #include "input.h"
 #include "gcunzip.h"
 #include "freeze.h"
 #include "sram.h"
 
-#include "snes9x/snes9x.h"
-#include "snes9x/memmap.h"
-#include "snes9x/cheats.h"
-
 BROWSERINFO browser;
 BROWSERENTRY * browserList = NULL; // list of files/folders in browser
 
-static char szpath[MAXPATHLEN];
+static char szpath[250];
 static bool inSz = false;
 
 unsigned long SNESROMSize = 0;
@@ -59,14 +59,10 @@ int autoLoadMethod()
 
 	int device = DEVICE_AUTO;
 
-	if(ChangeInterface(DEVICE_SD, SILENT))
-		device = DEVICE_SD;
-	else if(ChangeInterface(DEVICE_USB, SILENT))
+	if(ChangeInterface(DEVICE_USB, SILENT))
 		device = DEVICE_USB;
-	else if(ChangeInterface(DEVICE_SD_SLOTA, SILENT))
-		device = DEVICE_SD_SLOTA;
-	else if(ChangeInterface(DEVICE_SD_SLOTB, SILENT))
-		device = DEVICE_SD_SLOTB;
+	else if(ChangeInterface(DEVICE_HDD, SILENT))
+		device = DEVICE_HDD;
 	else if(ChangeInterface(DEVICE_DVD, SILENT))
 		device = DEVICE_DVD;
 	else if(ChangeInterface(DEVICE_SMB, SILENT))
@@ -92,14 +88,12 @@ int autoSaveMethod(bool silent)
 
 	int device = DEVICE_AUTO;
 
-	if(ChangeInterface(DEVICE_SD, SILENT))
-		device = DEVICE_SD;
-	else if(ChangeInterface(DEVICE_USB, SILENT))
+	if(ChangeInterface(DEVICE_USB, SILENT))
 		device = DEVICE_USB;
-	else if(ChangeInterface(DEVICE_SD_SLOTA, SILENT))
-		device = DEVICE_SD_SLOTA;
-	else if(ChangeInterface(DEVICE_SD_SLOTB, SILENT))
-		device = DEVICE_SD_SLOTB;
+	else if(ChangeInterface(DEVICE_HDD, SILENT))
+		device = DEVICE_HDD;
+	else if(ChangeInterface(DEVICE_DVD, SILENT))
+		device = DEVICE_DVD;
 	else if(ChangeInterface(DEVICE_SMB, SILENT))
 		device = DEVICE_SMB;
 	else if(!silent)
@@ -148,7 +142,7 @@ static void CleanupPath(char * path)
 	
 	int pathlen = strlen(path);
 	int j = 0;
-	for(int i=0; i < pathlen && i < MAXPATHLEN; i++)
+	for(int i=0; i < pathlen && i < 250; i++)
 	{
 		if(path[i] == '\\')
 			path[i] = '/';
@@ -164,12 +158,12 @@ bool IsDeviceRoot(char * path)
 	if(path == NULL || path[0] == 0)
 		return false;
 
-	if( strcmp(path, "sd:/")    == 0 ||
-		strcmp(path, "usb:/")   == 0 ||
-		strcmp(path, "dvd:/")   == 0 ||
-		strcmp(path, "smb:/")   == 0 ||
-		strcmp(path, "carda:/") == 0 ||
-		strcmp(path, "cardb:/") == 0)
+	if( strcmp(path, "sda:/")    == 0 ||
+		strcmp(path, "uda:/") == 0 ||                                
+		strcmp(path, "sda1:/")   == 0 ||
+		strcmp(path, "sda0:/")   == 0 ||
+		strcmp(path, "dvd:/")   == 0
+                )
 	{
 		return true;
 	}
@@ -227,7 +221,7 @@ int UpdateDirName()
 	else
 	{
 		/* test new directory namelength */
-		if ((strlen(browser.dir)+1+strlen(browserList[browser.selIndex].filename)) < MAXPATHLEN)
+		if ((strlen(browser.dir)+1+strlen(browserList[browser.selIndex].filename)) < 250)
 		{
 			/* update current directory name */
 			sprintf(browser.dir, "%s%s/",browser.dir, browserList[browser.selIndex].filename);
@@ -246,12 +240,12 @@ bool MakeFilePath(char filepath[], int type, char * filename, int filenum)
 	char file[512];
 	char folder[1024];
 	char ext[4];
-	char temppath[MAXPATHLEN];
+	char temppath[250];
 
 	if(type == FILE_ROM)
 	{
 		// Check path length
-		if ((strlen(browser.dir)+1+strlen(browserList[browser.selIndex].filename)) >= MAXPATHLEN)
+		if ((strlen(browser.dir)+1+strlen(browserList[browser.selIndex].filename)) >= 250)
 		{
 			ErrorPrompt("Maximum filepath length reached!");
 			filepath[0] = 0;
@@ -301,7 +295,7 @@ bool MakeFilePath(char filepath[], int type, char * filename, int filenum)
 		sprintf (temppath, "%s%s/%s", pathPrefix[GCSettings.SaveMethod], folder, file);
 	}
 	CleanupPath(temppath); // cleanup path
-	snprintf(filepath, MAXPATHLEN, "%s", temppath);
+	snprintf(filepath, 250, "%s", temppath);
 	return true;
 }
 
@@ -329,7 +323,7 @@ int FileSortCallback(const void *f1, const void *f2)
 	if(((BROWSERENTRY *)f1)->isdir && !(((BROWSERENTRY *)f2)->isdir)) return -1;
 	if(!(((BROWSERENTRY *)f1)->isdir) && ((BROWSERENTRY *)f2)->isdir) return 1;
 
-	return stricmp(((BROWSERENTRY *)f1)->filename, ((BROWSERENTRY *)f2)->filename);
+	return strcmp(((BROWSERENTRY *)f1)->filename, ((BROWSERENTRY *)f2)->filename);
 }
 
 /****************************************************************************
@@ -358,7 +352,7 @@ static bool IsValidROM()
 		{
 			char * zippedFilename = NULL;
 			
-			if(stricmp(p, ".zip") == 0 && !inSz)
+			if(strcmp(p, ".zip") == 0 && !inSz)
 			{
 				// we need to check the file extension of the first file in the archive
 				zippedFilename = GetFirstZipFilename ();
@@ -371,10 +365,10 @@ static bool IsValidROM()
 
 			if(p != NULL)
 			{
-				if (stricmp(p, ".smc") == 0 ||
-					stricmp(p, ".fig") == 0 ||
-					stricmp(p, ".sfc") == 0 ||
-					stricmp(p, ".swc") == 0)
+				if (strcmp(p, ".smc") == 0 ||
+					strcmp(p, ".fig") == 0 ||
+					strcmp(p, ".sfc") == 0 ||
+					strcmp(p, ".swc") == 0)
 				{
 					if(zippedFilename) free(zippedFilename);
 					return true;
@@ -399,7 +393,7 @@ bool IsSz()
 		char * p = strrchr(browserList[browser.selIndex].filename, '.');
 
 		if (p != NULL)
-			if(stricmp(p, ".7z") == 0)
+			if(strcmp(p, ".7z") == 0)
 				return true;
 	}
 	return false;
@@ -431,8 +425,8 @@ void StripExt(char* returnstring, char * inputstring)
  ***************************************************************************/
 int BrowserLoadSz()
 {
-	char filepath[MAXPATHLEN];
-	memset(filepath, 0, MAXPATHLEN);
+	char filepath[250];
+	memset(filepath, 0, 250);
 
 	// we'll store the 7z filepath for extraction later
 	if(!MakeFilePath(szpath, FILE_ROM))
@@ -481,7 +475,7 @@ int WiiFileLoader()
 	if(size <= 0)
 		return 0;
 
-	SNESROMSize = Memory.HeaderRemove(size, Memory.HeaderCount, Memory.ROM);
+	SNESROMSize = Memory.HeaderRemove(size, Memory.ROM);
 	return SNESROMSize;
 }
 
@@ -511,7 +505,7 @@ int BrowserLoadFile()
 	SNESROMSize = 0;
 	S9xDeleteCheats();
 	Memory.LoadROM("ROM");
-
+        
 	if (SNESROMSize <= 0)
 	{
 		ErrorPrompt("Error loading game!");
@@ -548,54 +542,39 @@ int BrowserChangeFolder()
 		SzClose();
 	}
 
-	if(!UpdateDirName())
+	if(!UpdateDirName()){
 		return -1;
+	}
 
 	HaltParseThread(); // halt parsing
 	CleanupPath(browser.dir);
 	ResetBrowser(); // reset browser
 
-	if(browser.dir[0] != 0)
+	if(browser.dir[0] != 0){
 		ParseDirectory();
+	}
 
 	if(browser.numEntries == 0)
 	{
 		browser.dir[0] = 0;
 		int i=0;
 		
-#ifdef HW_RVL
 		AddBrowserEntry();
-		sprintf(browserList[i].filename, "sd:/");
-		sprintf(browserList[i].displayname, "SD Card");
-		browserList[i].length = 0;
-		browserList[i].isdir = 1;
-		browserList[i].icon = ICON_SD;
-		i++;
-
-		AddBrowserEntry();
-		sprintf(browserList[i].filename, "usb:/");
+		sprintf(browserList[i].filename, "uda:/");
 		sprintf(browserList[i].displayname, "USB Mass Storage");
-		browserList[i].length = 0;
-		browserList[i].isdir = 1;
-		browserList[i].icon = ICON_USB;
-		i++;
-#else
-		AddBrowserEntry();
-		sprintf(browserList[i].filename, "carda:/");
-		sprintf(browserList[i].displayname, "SD Gecko Slot A");
 		browserList[i].length = 0;
 		browserList[i].isdir = 1;
 		browserList[i].icon = ICON_SD;
 		i++;
 		
 		AddBrowserEntry();
-		sprintf(browserList[i].filename, "cardb:/");
-		sprintf(browserList[i].displayname, "SD Gecko Slot B");
+		sprintf(browserList[i].filename, "sda0:/");
+		sprintf(browserList[i].displayname, "Hard Drive");
 		browserList[i].length = 0;
 		browserList[i].isdir = 1;
 		browserList[i].icon = ICON_SD;
 		i++;
-#endif
+                
 		AddBrowserEntry();
 		sprintf(browserList[i].filename, "smb:/");
 		sprintf(browserList[i].displayname, "Network Share");
@@ -639,7 +618,9 @@ int
 OpenGameList ()
 {
 	int device = GCSettings.LoadMethod;
-
+	
+	//device = DEVICE_USB;
+//
 	if(device == DEVICE_AUTO && strlen(GCSettings.LoadFolder) > 0)
 		device = autoLoadMethod();
 
@@ -648,7 +629,7 @@ OpenGameList ()
 		sprintf(browser.dir, "%s%s/", pathPrefix[device], GCSettings.LoadFolder);
 	else
 		browser.dir[0] = 0;
-	
+		
 	BrowserChangeFolder();
 	return browser.numEntries;
 }

@@ -10,6 +10,7 @@
 
 #include "gui.h"
 #include "../utils/gettext.h"
+#include "../_wchar.h"
 
 static GXColor presetColor = (GXColor){255, 255, 255, 255};
 static int currentSize = 0;

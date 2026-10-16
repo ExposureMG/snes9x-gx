@@ -10,7 +10,7 @@
  ***************************************************************************/
 
 #include <malloc.h>
-#include <gccore.h>
+#include <xetypes.h>
 #include <stdio.h>
 
 #include "snes9xgx.h"
@@ -18,13 +18,13 @@
 #include "filebrowser.h"
 #include "menu.h"
 #include "video.h"
-#include "utils/pngu.h"
+//#include "utils/pngu.h"
 
-#include "snes9x/snes9x.h"
-#include "snes9x/port.h"
-#include "snes9x/memmap.h"
-#include "snes9x/snapshot.h"
-#include "snes9x/language.h"
+#include "../snes9x/snes9x.h"
+#include "../snes9x/port.h"
+#include "../snes9x/memmap.h"
+#include "../snes9x/snapshot.h"
+#include "../snes9x/language.h"
 
 bool8 S9xOpenSnapshotFile(const char *filepath, bool8 readonly, STREAM *file)
 {
@@ -47,7 +47,7 @@ SaveSnapshot (char * filepath, bool silent)
 
 	if(!FindDevice(filepath, &device))
 		return 0;
-
+#if 0
 	// save screenshot
 	if(gameScreenPngSize > 0)
 	{
@@ -57,6 +57,7 @@ SaveSnapshot (char * filepath, bool silent)
 		sprintf(screenpath, "%s.png", screenpath);
 		SaveFile((char *)gameScreenPng, screenpath, gameScreenPngSize, silent);
 	}
+#endif
 
 	STREAM fp = OPEN_STREAM(filepath, "wb");
 	

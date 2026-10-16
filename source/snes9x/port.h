@@ -21,6 +21,7 @@
 #endif
 #ifndef XENON
 #include <sys/types.h>
+#define PIXEL_FORMAT RGB565
 #endif
 
 #ifdef __WIN32__

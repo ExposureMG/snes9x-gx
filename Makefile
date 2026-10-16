@@ -1,25 +1,165 @@
-.PHONY = all wii gc wii-clean gc-clean wii-run gc-run
+#---------------------------------------------------------------------------------
+# Clear the implicit built in rules
+#---------------------------------------------------------------------------------
+.SUFFIXES:
+#---------------------------------------------------------------------------------
+ifeq ($(strip $(DEVKITXENON)),)
+$(error "Please set DEVKITXENON in your environment. export DEVKITXENON=<path to>devkitxenon")
+endif
 
-all: wii gc
+include $(DEVKITXENON)/rules
 
-run: wii-run
+#---------------------------------------------------------------------------------
+# TARGET is the name of the output
+# BUILD is the directory where object files & intermediate files will be placed
+# SOURCES is a list of directories containing source code
+# INCLUDES is a list of directories containing extra header files
+#---------------------------------------------------------------------------------
+TARGET		:=	snes9xgx-xenon
+TARGETDIR   :=  executables
+BUILD		:=	build_xenon
+SOURCES		:=	source/snes9x source/snes9x/apu \
+				source/ source/images source/sounds source/fonts source/lang \
+				source/gui source/utils source/utils/sz source/utils/unzip \
+				lib/mxml-2.6 \
+				
+INCLUDES	:=	source/ source/snes9x lib/mxml-2.6
 
-clean: wii-clean gc-clean
+#---------------------------------------------------------------------------------
+# options for code generation
+#---------------------------------------------------------------------------------
 
-wii:
-	$(MAKE) -f Makefile.wii
+CFLAGS	=	-g -O3 -Wall $(MACHDEP) $(INCLUDE)  -DNO_SOUND \
+			-DZLIB -DRIGHTSHIFT_IS_SAR -DCPU_SHUTDOWN -DCORRECT_VRAM_READS \
+			-D_SZ_ONE_DIRECTORY -D_LZMA_IN_CB -D_LZMA_OUT_READ \
+			-fomit-frame-pointer \
+			-DXENON -DSNES9XGX -U__linux \
+			-Wno-unused-parameter -Wno-strict-aliasing \
+			-Wno-write-strings -Wno-parentheses 
 
-wii-clean:
-	$(MAKE) -f Makefile.wii clean
+CXXFLAGS	=	$(CFLAGS) -fpermissive -std=gnu++11
 
-wii-run: wii
-	$(MAKE) -f Makefile.wii run
+LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
-gc:
-	$(MAKE) -f Makefile.gc
+#---------------------------------------------------------------------------------
+# any extra libraries we wish to link with the project
+#---------------------------------------------------------------------------------
+LIBS	:=	-lpng -lbz2  -lxenon -lm -lz -lfreetype  -lbz2 -lfat -lxtaf 
 
-gc-clean:
-	$(MAKE) -f Makefile.gc clean
+#---------------------------------------------------------------------------------
+# list of directories containing libraries, this must be the top level containing
+# include and lib
+#---------------------------------------------------------------------------------
+LIBDIRS	:= $(CURDIR)
 
-gc-run: gc
-	$(MAKE) -f Makefile.gc run
+#---------------------------------------------------------------------------------
+# no real need to edit anything past this point unless you need to add additional
+# rules for different file extensions
+#---------------------------------------------------------------------------------
+ifneq ($(BUILD),$(notdir $(CURDIR)))
+#---------------------------------------------------------------------------------
+
+export OUTPUT	:=	$(CURDIR)/$(TARGETDIR)/$(TARGET)
+export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
+export DEPSDIR	:=	$(CURDIR)/$(BUILD)
+
+#---------------------------------------------------------------------------------
+# automatically build a list of object files for our project
+#---------------------------------------------------------------------------------
+CFILES		:=	$(filter-out mxmldoc.c testmxml.c, \
+				$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c))))
+CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
+sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
+SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.S)))
+TTFFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.ttf)))
+LANGFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.lang)))
+PNGFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.png)))
+PCMFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.pcm)))
+	
+#---------------------------------------------------------------------------------
+# use CXX for linking C++ projects, CC for standard C
+#---------------------------------------------------------------------------------
+ifeq ($(strip $(CPPFILES)),)
+	export LD	:=	$(CC)
+else
+	export LD	:=	$(CXX)
+endif
+
+export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
+					$(sFILES:.s=.o) $(SFILES:.S=.o) \
+					$(TTFFILES:.ttf=.ttf.o) $(LANGFILES:.lang=.lang.o) \
+					$(PNGFILES:.png=.png.o) \
+					$(PCMFILES:.pcm=.pcm.o)
+
+#---------------------------------------------------------------------------------
+# build a list of include paths
+#---------------------------------------------------------------------------------
+export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
+					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
+					-I$(CURDIR)/$(BUILD) \
+					-I$(LIBXENON_INC) -I$(LIBXENON_INC)/freetype2
+
+#---------------------------------------------------------------------------------
+# build a list of library paths
+#---------------------------------------------------------------------------------
+export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib) \
+					-L$(LIBXENON_LIB)
+
+export OUTPUT	:=	$(CURDIR)/$(TARGETDIR)/$(TARGET)
+.PHONY: $(BUILD) clean
+
+#---------------------------------------------------------------------------------
+$(BUILD):
+	@[ -d $@ ] || mkdir -p $@
+	@[ -d $(TARGETDIR) ] || mkdir -p $(TARGETDIR)
+	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+
+#---------------------------------------------------------------------------------
+clean:
+	@echo clean ...
+	@rm -fr $(BUILD) $(OUTPUT).elf $(OUTPUT).elf32
+
+#---------------------------------------------------------------------------------
+
+source/ffs_content.c: genffs.py data/ps.psu data/vs.vsu
+	python genffs.py > source/ffs_content.c
+
+run: $(BUILD) $(OUTPUT).elf32
+	cp $(OUTPUT).elf32 /srv/tftp/tftpboot/xenon
+	$(PREFIX)strip /srv/tftp/tftpboot/xenon
+
+#---------------------------------------------------------------------------------
+else
+
+DEPENDS	:=	$(OFILES:.o=.d)
+
+#---------------------------------------------------------------------------------
+# main targets
+#---------------------------------------------------------------------------------
+$(OUTPUT).elf32: $(OUTPUT).elf
+$(OUTPUT).elf: $(OFILES)
+
+#---------------------------------------------------------------------------------
+# This rule links in binary data with these extensions: ttf lang png pcm
+#---------------------------------------------------------------------------------
+%.ttf.o : %.ttf
+	@echo $(notdir $<)
+	$(bin2o)
+	
+%.lang.o : %.lang
+	@echo $(notdir $<)
+	$(bin2o)
+
+%.png.o : %.png
+	@echo $(notdir $<)
+	$(bin2o)
+	
+%.pcm.o : %.pcm
+	@echo $(notdir $<)
+	$(bin2o)
+
+-include $(DEPENDS)
+
+#---------------------------------------------------------------------------------
+endif
+#---------------------------------------------------------------------------------

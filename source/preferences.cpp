@@ -8,11 +8,10 @@
  * Preferences save/load to XML file
  ***************************************************************************/
 
-#include <gccore.h>
+#include <xetypes.h>
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
-#include <ogcsys.h>
 #include <mxml.h>
 
 #include "snes9xgx.h"
@@ -376,8 +375,8 @@ void FixInvalidSettings()
 		GCSettings.language = LANG_ENGLISH;
 	if(GCSettings.Controller > CTRL_PAD4 || GCSettings.Controller < CTRL_MOUSE)
 		GCSettings.Controller = CTRL_PAD2;
-	if(!(GCSettings.render >= 0 && GCSettings.render < 3))
-		GCSettings.render = 2;
+	if(!(GCSettings.render >= 0 && GCSettings.render < GetFilterNumber()))
+		GCSettings.render = GetFilterNumber()-1;
 	if(!(GCSettings.videomode >= 0 && GCSettings.videomode < 5))
 		GCSettings.videomode = 0;
 }
@@ -454,8 +453,8 @@ DefaultSettings ()
 	Settings.SixteenBitSound = true;
 	Settings.Stereo = true;
 	Settings.ReverseStereo = true;
-	Settings.SoundPlaybackRate = 32000;
-	Settings.SoundInputRate = 31953;
+	Settings.SoundPlaybackRate = 48000;
+	Settings.SoundInputRate = 32000;
 
 	// Graphics
 	Settings.Transparency = true;
@@ -469,17 +468,25 @@ DefaultSettings ()
 	// Frame timings in 50hz and 60hz cpu mode
 	Settings.FrameTimePAL = 20000;
 	Settings.FrameTimeNTSC = 16667;
+
+	/* Super FX / CPU timing used by the snes9x 1.61 core (SNES9XGX build) */
+	Settings.SuperFXSpeedPerLine = 5823405;
+	Settings.SuperFXClockMultiplier = 100;
+	Settings.OverclockMode = 0;
+	Settings.OneClockCycle = 6;
+	Settings.OneSlowClockCycle = 8;
+	Settings.TwoClockCycles = 12;
 }
 
 /****************************************************************************
  * Save Preferences
  ***************************************************************************/
-static char prefpath[MAXPATHLEN] = { 0 };
+static char prefpath[250] = { 0 };
 
 bool
 SavePrefs (bool silent)
 {
-	char filepath[MAXPATHLEN];
+	char filepath[250];
 	int datasize;
 	int offset = 0;
 	int device = 0;
@@ -540,6 +547,8 @@ SavePrefs (bool silent)
 
 	CancelAction();
 
+        
+        
 	if (offset > 0)
 	{
 		if (!silent)
@@ -557,7 +566,7 @@ LoadPrefsFromMethod (char * path)
 {
 	bool retval = false;
 	int offset = 0;
-	char filepath[MAXPATHLEN];
+	char filepath[250];
 	sprintf(filepath, "%s/%s", path, PREF_FILE_NAME);
 
 	AllocSaveBuffer ();
@@ -592,21 +601,12 @@ bool LoadPrefs()
 		return true;
 
 	bool prefFound = false;
-	char filepath[5][MAXPATHLEN];
+	char filepath[5][250];
 	int numDevices;
 	
-#ifdef HW_RVL
-	numDevices = 5;
-	sprintf(filepath[0], "%s", appPath);
-	sprintf(filepath[1], "sd:/apps/%s", APPFOLDER);
-	sprintf(filepath[2], "usb:/apps/%s", APPFOLDER);
-	sprintf(filepath[3], "sd:/%s", APPFOLDER);
-	sprintf(filepath[4], "usb:/%s", APPFOLDER);
-#else
-	numDevices = 2;
-	sprintf(filepath[0], "carda:/%s", APPFOLDER);
-	sprintf(filepath[1], "cardb:/%s", APPFOLDER);
-#endif
+	numDevices = 4;
+	sprintf(filepath[0], "uda:/%s", APPFOLDER);
+	sprintf(filepath[1], "sda:/%s", APPFOLDER);
 
 	for(int i=0; i<numDevices; i++)
 	{
@@ -622,15 +622,10 @@ bool LoadPrefs()
 		FixInvalidSettings();
 	
 	// rename snes9x to snes9xgx
-	if(GCSettings.LoadMethod == DEVICE_SD)
-	{
-		if(ChangeInterface(DEVICE_SD, NOTSILENT) && opendir("sd:/snes9x"))
-			rename("sd:/snes9x", "sd:/snes9xgx");
-	}
 	else if(GCSettings.LoadMethod == DEVICE_USB)
 	{
-		if(ChangeInterface(DEVICE_USB, NOTSILENT) && opendir("usb:/snes9x"))
-			rename("usb:/snes9x", "usb:/snes9xgx");
+		if(ChangeInterface(DEVICE_USB, NOTSILENT) && opendir("uda:/snes9x"))
+			rename("uda:/snes9x", "uda:/snes9xgx");
 	}
 	else if(GCSettings.LoadMethod == DEVICE_SMB)
 	{

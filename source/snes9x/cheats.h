@@ -7,6 +7,8 @@
 #ifndef _CHEATS_H_
 #define _CHEATS_H_
 
+#define MAX_CHEATS	150
+
 #include "port.h"
 #include "bml.h"
 #include <vector>
@@ -31,6 +33,7 @@ struct SCheatGroup
 
 struct SCheatData
 {
+	uint32	num_cheats;
 	std::vector<struct SCheatGroup> g;
 	bool8	enabled;
 	uint8	CWRAM[0x20000];
